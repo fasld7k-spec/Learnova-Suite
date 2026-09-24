@@ -1,0 +1,1 @@
+ALTER TABLE "ApiKey" ADD COLUMN IF NOT EXISTS "scopes" TEXT NOT NULL DEFAULT '["courses:read"]';

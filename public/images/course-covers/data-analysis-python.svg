@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Data Analysis with Python course cover">
+  <rect width="1200" height="675" fill="#000000"/>
+  <rect x="54" y="54" width="1092" height="567" rx="32" fill="#16181C" stroke="#2F3336" stroke-width="2"/>
+  <path d="M188 500V370M318 500V278M448 500V332M578 500V188M708 500V240" stroke="#1D9BF0" stroke-width="44" stroke-linecap="round"/>
+  <path d="M170 504h590" stroke="#FFFFFF" stroke-width="8" stroke-linecap="round"/>
+  <path d="M170 160c76 58 132 78 204 62 85-18 112-88 202-80 70 6 108 58 180 48" fill="none" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  <text x="820" y="190" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">Data Analysis</text>
+  <text x="820" y="246" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">with Python</text>
+  <text x="820" y="538" fill="#AAB8C2" font-family="Inter, Arial, sans-serif" font-size="28">Pandas, charts, dashboards</text>
+</svg>

@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Learnova Suite Documentation</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #000;
+        --panel: #0f1115;
+        --panel-2: #16181c;
+        --border: #2f3336;
+        --text: #fff;
+        --muted: #b8c1cc;
+        --faint: #71767b;
+        --blue: #1d9bf0;
+        --green: #00ba7c;
+        --yellow: #ffd400;
+      }
+
+      * { box-sizing: border-box; }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.65;
+      }
+
+      a { color: var(--blue); text-decoration: none; }
+      a:hover { text-decoration: underline; }
+
+      code, pre {
+        font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      }
+
+      pre {
+        overflow: auto;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 16px;
+        background: #050505;
+        color: var(--text);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 16px 0;
+      }
+
+      th, td {
+        border-bottom: 1px solid var(--border);
+        padding: 12px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th { color: var(--text); }
+      p, li, td { color: var(--muted); }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 280px minmax(0, 1fr);
+        min-height: 100vh;
+      }
+
+      aside {
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        border-right: 1px solid var(--border);
+        background: #050505;
+        padding: 24px;
+      }
+
+      .brand {
+        display: grid;
+        gap: 6px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand strong {
+        font-size: 18px;
+        color: var(--text);
+      }
+
+      .brand span {
+        color: var(--faint);
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      nav {
+        display: grid;
+        gap: 4px;
+        margin-top: 20px;
+      }
+
+      nav a {
+        border-radius: 999px;
+        color: var(--muted);
+        font-size: 14px;
+        font-weight: 700;
+        padding: 8px 12px;
+      }
+
+      nav a:hover {
+        background: var(--panel-2);
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      main {
+        max-width: 1180px;
+        padding: 48px 28px 80px;
+      }
+
+      .hero {
+        border-bottom: 1px solid var(--border);
+        padding-bottom: 34px;
+      }
+
+      .eyebrow {
+        color: var(--blue);
+        font-size: 12px;
+        font-weight: 900;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+      }
+
+      h1, h2, h3 { line-height: 1.15; margin: 0 0 14px; }
+      h1 { font-size: clamp(36px, 6vw, 74px); letter-spacing: 0; max-width: 900px; }
+      h2 { font-size: 30px; margin-top: 54px; padding-top: 34px; border-top: 1px solid var(--border); }
+      h3 { font-size: 20px; margin-top: 28px; }
+
+      .lead {
+        color: var(--muted);
+        font-size: 18px;
+        max-width: 860px;
+      }
+
+      .pill-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 22px;
+      }
+
+      .pill {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 8px 14px;
+        color: var(--text);
+        font-size: 13px;
+        font-weight: 800;
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 42px;
+        border-radius: 999px;
+        padding: 10px 18px;
+        font-weight: 900;
+        border: 1px solid var(--border);
+      }
+
+      .button.primary {
+        background: var(--blue);
+        border-color: var(--blue);
+        color: #fff;
+      }
+
+      .button.secondary {
+        color: var(--text);
+        background: #000;
+      }
+
+      .grid {
+        display: grid;
+        gap: 14px;
+      }
+
+      .grid.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+      .card {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        border-radius: 8px;
+        padding: 18px;
+      }
+
+      .card h3 {
+        margin-top: 0;
+        font-size: 17px;
+      }
+
+      .card p { margin-bottom: 0; }
+
+      .status {
+        display: inline-flex;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        padding: 4px 9px;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: 900;
+      }
+
+      .warning {
+        border: 1px solid #5c4b00;
+        background: #171300;
+        color: #fff;
+      }
+
+      .warning strong { color: var(--yellow); }
+
+      .file-list {
+        display: grid;
+        gap: 10px;
+        padding: 0;
+        list-style: none;
+      }
+
+      .file-list li {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--border);
+        padding: 12px 0;
+      }
+
+      .file-list span {
+        color: var(--faint);
+        text-align: right;
+      }
+
+      .checklist {
+        columns: 2;
+        column-gap: 36px;
+      }
+
+      .checklist li {
+        break-inside: avoid;
+        margin: 0 0 8px;
+      }
+
+      .footer-note {
+        margin-top: 64px;
+        border-top: 1px solid var(--border);
+        padding-top: 28px;
+        color: var(--faint);
+        font-size: 14px;
+      }
+
+      @media (max-width: 900px) {
+        .layout { display: block; }
+        aside {
+          position: static;
+          height: auto;
+          border-right: 0;
+          border-bottom: 1px solid var(--border);
+        }
+        nav {
+          display: flex;
+          overflow: auto;
+          padding-bottom: 4px;
+        }
+        nav a { white-space: nowrap; }
+        main { padding: 34px 18px 64px; }
+        .grid.two, .grid.three { grid-template-columns: 1fr; }
+        .checklist { columns: 1; }
+        .file-list li { display: grid; }
+        .file-list span { text-align: left; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside>
+        <div class="brand">
+          <strong>Learnova Suite</strong>
+          <span>Documentation Center</span>
+        </div>
+        <nav aria-label="Documentation navigation">
+          <a href="#start">Start Here</a>
+          <a href="#install">Installation</a>
+          <a href="#accounts">Demo Accounts</a>
+          <a href="#roles">Roles</a>
+          <a href="#admin">Admin Panel</a>
+          <a href="#instructor">Instructor Studio</a>
+          <a href="#student">Student Area</a>
+          <a href="#payments">Payments</a>
+          <a href="#themes">Themes</a>
+          <a href="#addons">Add-ons</a>
+          <a href="#security">Security</a>
+          <a href="#production">Production</a>
+          <a href="#files">Files</a>
+          <a href="#support">Support</a>
+        </nav>
+      </aside>
+
+      <main id="start">
+        <section class="hero">
+          <div class="eyebrow">Buyer documentation</div>
+          <h1>Learnova Suite Documentation</h1>
+          <p class="lead">
+            Learnova Suite is a production-oriented Next.js LMS marketplace for selling online courses, managing instructors,
+            running live classes, issuing certificates, controlling themes, handling sandbox checkout flows,
+            and preparing a production education platform with buyer-friendly setup scripts.
+          </p>
+
+          <div class="pill-row">
+            <span class="pill">Next.js 16</span>
+            <span class="pill">React</span>
+            <span class="pill">TypeScript</span>
+            <span class="pill">Prisma</span>
+            <span class="pill">SQLite Demo</span>
+            <span class="pill">PostgreSQL Production</span>
+            <span class="pill">Admin / Instructor / Student</span>
+          </div>
+
+          <div class="actions">
+            <a class="button primary" href="../docs/QUICK_INSTALL.md">Quick Install</a>
+            <a class="button secondary" href="../docs/RUN_AND_DEPLOY_STEPS.md">Run And Deploy</a>
+            <a class="button secondary" href="../docs/COMPLETE_PLATFORM_MANUAL.md">Platform Manual</a>
+            <a class="button secondary" href="../docs/CLIENT_GUIDE.md">Client Guide</a>
+          </div>
+        </section>
+
+        <section>
+          <h2>What Is Included</h2>
+          <div class="grid three">
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Marketplace Frontend</h3>
+              <p>Homepage themes, course catalog, course details, instructors, live sessions, blog, CMS pages, legal pages and SEO routes.</p>
+            </article>
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Role Dashboards</h3>
+              <p>Separate Admin, Instructor and Student experiences with protected routes, role checks and demo accounts.</p>
+            </article>
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Commerce Foundation</h3>
+              <p>Cart, checkout, orders, invoices, coupons, manual payment and sandbox payment gateway foundations.</p>
+            </article>
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Learning System</h3>
+              <p>Course builder, modules, lessons, resources, quizzes, progress tracking, protected media helpers and certificates.</p>
+            </article>
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Admin Configuration</h3>
+              <p>Settings, themes, languages, currencies, certificate templates, notifications, add-ons, payment gateways and reports.</p>
+            </article>
+            <article class="card">
+              <span class="status">Included</span>
+              <h3>Production Guides</h3>
+              <p>Environment examples, PostgreSQL schema, production preflight, support policy and deployment notes.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="install">
+          <h2>Quick Demo Installation</h2>
+          <p>Use this flow to review the app locally with SQLite and seeded demo data.</p>
+          <pre><code>npm install
+npm run demo:setup
+npm run demo:doctor
+npm run demo:dev</code></pre>
+          <p>Open <code>http://localhost:3000</code>.</p>
+
+          <h3>Optional Smoke Test</h3>
+          <p>Run this in a second terminal while the demo server is running.</p>
+          <pre><code>npm run demo:smoke</code></pre>
+
+          <h3>Production Installation</h3>
+          <p>Use PostgreSQL and production environment values for live stores.</p>
+          <pre><code>cp .env.production.example .env
+npm install
+npm run production:preflight
+npm run prisma:generate:postgres
+npm run prisma:push:postgres
+npm run build:postgres
+npm run start</code></pre>
+        </section>
+
+        <section id="accounts">
+          <h2>Demo Accounts</h2>
+          <table>
+            <thead>
+              <tr><th>Role</th><th>Email</th><th>Password</th><th>Entry Point</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Admin</td><td>admin@demo.com</td><td>value of <code>DEMO_PASSWORD</code></td><td><code>/admin</code></td></tr>
+              <tr><td>Instructor</td><td>instructor@demo.com</td><td>value of <code>DEMO_PASSWORD</code></td><td><code>/instructor</code></td></tr>
+              <tr><td>Student</td><td>student@demo.com</td><td>value of <code>DEMO_PASSWORD</code></td><td><code>/student</code></td></tr>
+            </tbody>
+          </table>
+          <div class="card warning">
+            <strong>Production warning:</strong> replace demo accounts and passwords before launching a live website.
+          </div>
+        </section>
+
+        <section id="roles">
+          <h2>User Roles</h2>
+          <div class="grid three">
+            <article class="card">
+              <h3>Admin</h3>
+              <p>Controls users, courses, categories, settings, themes, payments, certificates, add-ons, reports, notifications and platform content.</p>
+            </article>
+            <article class="card">
+              <h3>Instructor</h3>
+              <p>Creates courses, uploads content, manages modules, lessons, coupons, live sessions, availability, students and analytics.</p>
+            </article>
+            <article class="card">
+              <h3>Student</h3>
+              <p>Browses courses, purchases through demo checkout, watches lessons, tracks progress, receives certificates and uses messages/notifications.</p>
+            </article>
+          </div>
+        </section>
+
+        <section id="admin">
+          <h2>Admin Panel Overview</h2>
+          <p>The Admin panel is the control center for the marketplace.</p>
+          <div class="grid two">
+            <article class="card">
+              <h3>Platform Management</h3>
+              <ul>
+                <li>Dashboard and platform metrics.</li>
+                <li>User and instructor management.</li>
+                <li>Course publishing/review foundations.</li>
+                <li>Categories, pages, blog and knowledge base.</li>
+                <li>Reports, exports and analytics foundations.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Configuration</h3>
+              <ul>
+                <li>General settings and white label fields.</li>
+                <li>Payment gateways and manual payment methods.</li>
+                <li>Email templates and notification campaigns.</li>
+                <li>Homepage themes and theme customization pages.</li>
+                <li>Certificate templates and add-on center.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="instructor">
+          <h2>Instructor Studio</h2>
+          <p>Instructors can build and manage learning content from their own dashboard.</p>
+          <div class="grid two">
+            <article class="card">
+              <h3>Course Creation</h3>
+              <ul>
+                <li>Create course drafts.</li>
+                <li>Upload course cover images.</li>
+                <li>Add modules and lessons.</li>
+                <li>Add resources and quizzes.</li>
+                <li>Open selected lessons for free preview.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Business Tools</h3>
+              <ul>
+                <li>Create course coupons.</li>
+                <li>Manage live sessions and availability.</li>
+                <li>Review students and questions.</li>
+                <li>Track course visits and analytics foundations.</li>
+                <li>Use earnings and withdrawal foundations.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="student">
+          <h2>Student Area</h2>
+          <p>Students get a protected learning experience after enrollment or purchase.</p>
+          <div class="grid two">
+            <article class="card">
+              <h3>Learning</h3>
+              <ul>
+                <li>My courses dashboard.</li>
+                <li>Lesson player.</li>
+                <li>Progress tracking.</li>
+                <li>Bookmarks and notes foundations.</li>
+                <li>Certificates and verification pages.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Account Experience</h3>
+              <ul>
+                <li>Invoices and orders.</li>
+                <li>Favorites and collections.</li>
+                <li>Messages and notifications.</li>
+                <li>Live sessions.</li>
+                <li>Privacy and preferences.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section id="payments">
+          <h2>Payments And Checkout</h2>
+          <p>Learnova includes demo-safe commerce flows and gateway foundations.</p>
+          <table>
+            <thead>
+              <tr><th>Area</th><th>What It Does</th><th>Production Note</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Cart</td><td>Collects selected courses and totals.</td><td>Test coupon and total calculation before launch.</td></tr>
+              <tr><td>Demo checkout</td><td>Lets reviewers test payment without real provider accounts.</td><td>Disable sandbox mode for live payments.</td></tr>
+              <tr><td>Manual payment</td><td>Supports offline/bank-transfer style approval foundations.</td><td>Set clear instructions and admin approval workflow.</td></tr>
+              <tr><td>Gateway foundations</td><td>Stripe, PayPal, Mollie, Tap Payments, Xendit and extension points.</td><td>Configure real keys, callbacks and webhooks.</td></tr>
+            </tbody>
+          </table>
+          <div class="card warning">
+            <strong>Important:</strong> payment provider screens are sandbox/demo foundations until real credentials and webhooks are configured.
+          </div>
+        </section>
+
+        <section id="themes">
+          <h2>Homepage Themes</h2>
+          <p>Admins can choose and customize homepage themes from the Admin panel.</p>
+          <ul class="checklist">
+            <li>Theme listing cards.</li>
+            <li>Activate button on each theme.</li>
+            <li>Customize button for each theme.</li>
+            <li>Dedicated customization page.</li>
+            <li>Editable text fields.</li>
+            <li>Upload/image fields.</li>
+            <li>Preview links using <code>/?previewTheme=theme-id</code>.</li>
+            <li>Future theme extension structure.</li>
+          </ul>
+          <p>Read <a href="../docs/home-theme-system.md">docs/home-theme-system.md</a> for developer notes.</p>
+        </section>
+
+        <section id="addons">
+          <h2>Add-ons And Extensions</h2>
+          <p>The add-on center is prepared for modular platform extensions controlled by Admin.</p>
+          <div class="grid two">
+            <article class="card">
+              <h3>Admin Controls</h3>
+              <p>View available add-ons, enable or disable them, and manage settings foundations where supported.</p>
+            </article>
+            <article class="card">
+              <h3>Developer Notes</h3>
+              <p>Use the add-on registry and documented structure to add future platform modules without scattering configuration.</p>
+            </article>
+          </div>
+          <p>Read <a href="../docs/ADDONS.md">docs/ADDONS.md</a> for implementation details.</p>
+        </section>
+
+        <section id="security">
+          <h2>Security And Content Protection</h2>
+          <div class="grid two">
+            <article class="card">
+              <h3>Security Foundations</h3>
+              <ul>
+                <li>JWT HTTP-only cookies.</li>
+                <li>Role-based access control.</li>
+                <li>Admin, instructor and student route guards.</li>
+                <li>Origin checks for mutating requests.</li>
+                <li>Rate limiting foundations.</li>
+                <li>Security headers.</li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Media Protection</h3>
+              <ul>
+                <li>Paid lesson access checks.</li>
+                <li>Free preview lesson access.</li>
+                <li>Signed media helper foundations.</li>
+                <li>Watermark/logo setting foundations.</li>
+                <li>Recommended private video/object storage.</li>
+              </ul>
+            </article>
+          </div>
+          <p>No LMS can fully prevent screen recording. Use secure providers, signed URLs and clear access rules for practical content protection.</p>
+        </section>
+
+        <section id="production">
+          <h2>Production Launch Checklist</h2>
+          <ul class="checklist">
+            <li>Use PostgreSQL.</li>
+            <li>Set <code>DEMO_MODE=false</code>.</li>
+            <li>Set <code>PAYMENT_SANDBOX_MODE=false</code>.</li>
+            <li>Set <code>ALLOW_LOCAL_UPLOADS=false</code>.</li>
+            <li>Use HTTPS.</li>
+            <li>Set strong unique secrets.</li>
+            <li>Configure SMTP or a transactional email provider.</li>
+            <li>Configure payment provider API keys.</li>
+            <li>Configure payment webhooks.</li>
+            <li>Configure object/video storage.</li>
+            <li>Replace demo courses and media.</li>
+            <li>Replace demo accounts and passwords.</li>
+            <li>Review legal pages.</li>
+            <li>Run <code>npm run production:preflight</code>.</li>
+            <li>Run provider sandbox tests.</li>
+            <li>Run a full checkout test.</li>
+          </ul>
+        </section>
+
+        <section id="files">
+          <h2>Documentation File Map</h2>
+          <ul class="file-list">
+            <li><a href="../docs/COMPLETE_PLATFORM_MANUAL.md">docs/COMPLETE_PLATFORM_MANUAL.md</a><span>Full platform manual</span></li>
+            <li><a href="../docs/RUN_AND_DEPLOY_STEPS.md">docs/RUN_AND_DEPLOY_STEPS.md</a><span>Run/deploy steps</span></li>
+            <li><a href="../docs/QUICK_INSTALL.md">docs/QUICK_INSTALL.md</a><span>Short local/server installation guide</span></li>
+            <li><a href="../docs/CLIENT_GUIDE.md">docs/CLIENT_GUIDE.md</a><span>Buyer starting guide</span></li>
+            <li><a href="../docs/INSTALLATION.md">docs/INSTALLATION.md</a><span>Installation commands</span></li>
+            <li><a href="../docs/ENVIRONMENT_VARIABLES.md">docs/ENVIRONMENT_VARIABLES.md</a><span>Environment variable reference</span></li>
+            <li><a href="../docs/PRODUCTION_READINESS.md">docs/PRODUCTION_READINESS.md</a><span>Production checklist</span></li>
+            <li><a href="../docs/PAYMENT_GATEWAYS.md">docs/PAYMENT_GATEWAYS.md</a><span>Payment provider notes</span></li>
+            <li><a href="../docs/ADDONS.md">docs/ADDONS.md</a><span>Add-on system notes</span></li>
+            <li><a href="../docs/home-theme-system.md">docs/home-theme-system.md</a><span>Homepage theme developer guide</span></li>
+            <li><a href="../docs/ASSET_LICENSES.md">docs/ASSET_LICENSES.md</a><span>Asset and preview media notes</span></li>
+            <li><a href="../docs/SUPPORT_POLICY.md">docs/SUPPORT_POLICY.md</a><span>Support scope</span></li>
+            <li><a href="../docs/THIRD_PARTY_NOTICES.md">docs/THIRD_PARTY_NOTICES.md</a><span>Dependency notices</span></li>
+            <li><a href="../README.md">README.md</a><span>Project overview</span></li>
+            <li><a href="../SECURITY.md">SECURITY.md</a><span>Security policy</span></li>
+          </ul>
+        </section>
+
+        <section id="support">
+          <h2>Support Request Template</h2>
+          <p>When requesting support, include this information and never post private keys or passwords publicly.</p>
+          <pre><code>Node.js version:
+npm version:
+Hosting provider:
+Database type:
+Command you ran:
+Full error message:
+Demo mode or production mode:
+Recent code changes, if any:</code></pre>
+
+          <h3>Useful Verification Commands</h3>
+          <pre><code>npm run demo:doctor
+npm run demo:smoke
+npm run localization:check
+npm run themes:check
+npm run themes:admin-check
+npm run lint
+npx tsc --noEmit --pretty false
+npm run demo:build
+npm run production:preflight</code></pre>
+        </section>
+
+        <p class="footer-note">
+          This documentation page is included as a buyer-friendly starting point. For the full detailed manual,
+          open <code>docs/COMPLETE_PLATFORM_MANUAL.md</code>. For the shortest installation path, open
+          <code>docs/QUICK_INSTALL.md</code>.
+        </p>
+      </main>
+    </div>
+  </body>
+</html>

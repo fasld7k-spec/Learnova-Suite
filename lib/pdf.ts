@@ -1,0 +1,2 @@
+export function renderInvoiceHtml(order:any){return `<html><body><h1>Invoice ${order.invoiceNumber}</h1><p>Total: ${order.total} ${order.currency}</p><p>Status: ${order.status}</p></body></html>`}
+export function renderCertificateHtml(cert:any){return `<html><body style="font-family:Arial;text-align:center"><h1>Certificate of Completion</h1><p>${cert.student}</p><p>has completed</p><h2>${cert.course}</h2><p>Instructor: ${cert.instructor}</p><p>Code: ${cert.code}</p></body></html>`}

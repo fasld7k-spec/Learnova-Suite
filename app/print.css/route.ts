@@ -1,0 +1,1 @@
+export async function GET(){return new Response(`@media print{header,footer,nav,.no-print{display:none!important}.card{box-shadow:none!important;border:1px solid #ddd!important}body{background:white!important;color:#111!important}}`,{headers:{'content-type':'text/css; charset=utf-8'}})}

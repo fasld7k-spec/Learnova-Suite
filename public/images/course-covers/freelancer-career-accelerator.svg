@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Career Accelerator for Freelancers course cover">
+  <rect width="1200" height="675" fill="#000000"/>
+  <rect x="50" y="50" width="1100" height="575" rx="34" fill="#16181C" stroke="#2F3336" stroke-width="2"/>
+  <rect x="150" y="160" width="310" height="356" rx="30" fill="#000000" stroke="#FFFFFF" stroke-width="8"/>
+  <rect x="522" y="198" width="206" height="72" rx="36" fill="#1D9BF0"/>
+  <rect x="522" y="314" width="312" height="72" rx="36" fill="#000000" stroke="#2F3336" stroke-width="4"/>
+  <rect x="522" y="430" width="244" height="72" rx="36" fill="#000000" stroke="#2F3336" stroke-width="4"/>
+  <path d="M214 262h182M214 326h132M214 390h162" stroke="#FFFFFF" stroke-width="18" stroke-linecap="round"/>
+  <text x="546" y="246" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Offer</text>
+  <text x="546" y="362" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Proposal</text>
+  <text x="546" y="478" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="28" font-weight="800">Pipeline</text>
+  <text x="126" y="590" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="42" font-weight="800">Career Accelerator for Freelancers</text>
+</svg>

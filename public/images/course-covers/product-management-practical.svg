@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-label="Product Management Practical course cover">
+  <rect width="1200" height="675" fill="#000000"/>
+  <rect x="46" y="46" width="1108" height="583" rx="32" fill="#16181C" stroke="#2F3336" stroke-width="2"/>
+  <rect x="132" y="148" width="260" height="330" rx="26" fill="#000000" stroke="#2F3336" stroke-width="4"/>
+  <rect x="470" y="148" width="260" height="330" rx="26" fill="#000000" stroke="#2F3336" stroke-width="4"/>
+  <rect x="808" y="148" width="260" height="330" rx="26" fill="#000000" stroke="#2F3336" stroke-width="4"/>
+  <circle cx="262" cy="218" r="44" fill="#1D9BF0"/>
+  <circle cx="600" cy="218" r="44" fill="#1D9BF0"/>
+  <circle cx="938" cy="218" r="44" fill="#1D9BF0"/>
+  <path d="M184 316h154M184 372h118M522 316h154M522 372h118M860 316h154M860 372h118" stroke="#FFFFFF" stroke-width="16" stroke-linecap="round"/>
+  <text x="150" y="552" fill="#FFFFFF" font-family="Inter, Arial, sans-serif" font-size="44" font-weight="800">Product Management Practical</text>
+  <text x="150" y="594" fill="#AAB8C2" font-family="Inter, Arial, sans-serif" font-size="26">Discovery, roadmap, delivery</text>
+</svg>

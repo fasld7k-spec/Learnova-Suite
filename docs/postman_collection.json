@@ -1,0 +1,10 @@
+{
+  "info": {"name": "Learnova Suite API", "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"},
+  "item": [
+    {"name":"Auth Me","request":{"method":"GET","url":"{{baseUrl}}/api/auth/me"}},
+    {"name":"Courses","request":{"method":"GET","url":"{{baseUrl}}/api/courses"}},
+    {"name":"Admin Stats","request":{"method":"GET","url":"{{baseUrl}}/api/admin/stats"}},
+    {"name":"Live Sessions","request":{"method":"GET","url":"{{baseUrl}}/api/live-sessions"}},
+    {"name":"Verify Certificate","request":{"method":"GET","url":"{{baseUrl}}/api/certificates/verify/CODE"}}
+  ]
+}

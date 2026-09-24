@@ -1,0 +1,1 @@
+ALTER TABLE "Question" ADD COLUMN "helpfulCount" INTEGER NOT NULL DEFAULT 0;

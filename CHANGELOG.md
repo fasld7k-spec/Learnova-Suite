@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.0.0 - Initial CodeCanyon Release
+## 1.0.0 - Initial open-source release
 
 ### Added
 - Next.js 16 LMS marketplace source with Student, Instructor, and Admin roles.
@@ -17,7 +17,7 @@
 - Admin-selectable single active language with Arabic RTL, English LTR, and additional language dictionaries.
 - Theme system with admin customization and seven admin-selectable homepage themes.
 - SEO foundations including metadata, sitemap, robots, course/category pages, blog, and Open Graph-ready content.
-- Buyer documentation, installation guide, environment variable reference, support policy, asset notes, third-party notices, and package validation scripts.
+- Documentation, installation guide, environment variable reference, asset notes, third-party notices, and validation scripts.
 
 ### Security
 - HTTP-only cookie authentication and role-aware protected routes.
@@ -29,5 +29,5 @@
 - Webhook idempotency and payment state handling foundations.
 
 ### Notes
-- Demo mode is intended for CodeCanyon review and buyer evaluation.
+- Demo mode is intended for local evaluation and development only.
 - Production deployments must configure PostgreSQL, real secrets, SMTP, live payment credentials, webhooks, HTTPS, and private media storage.

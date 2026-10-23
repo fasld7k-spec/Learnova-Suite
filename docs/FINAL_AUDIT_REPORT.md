@@ -10,13 +10,12 @@ Production build passes successfully.
 - Tailwind CSS
 - JWT cookie auth
 
-## CodeCanyon Readiness
+## Project Readiness
 - Demo data included
 - Demo accounts included
 - Documentation included
 - Installation guide included
 - Feature list included
-- Packaging script included
 
 ## Production Hardening Status
 - Stripe Checkout and PayPal Orders foundations are included with webhook signature, amount, currency, and session validation.

@@ -2,7 +2,7 @@ import { ok } from '@/lib/api';
 import packageMetadata from '@/package.json';
 
 const PRODUCT_NAME = 'Learnova Suite';
-const EDITION = 'CodeCanyon SaaS Marketplace';
+const EDITION = 'Open Source';
 
 function clean(value?: string | null) {
   const trimmed = value?.trim();

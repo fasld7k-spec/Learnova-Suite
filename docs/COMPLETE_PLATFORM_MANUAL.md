@@ -782,13 +782,13 @@ Checkout can show:
 
 ### Demo Payment
 
-Local evaluation mode includes mock checkout screens for buyers.
+Local evaluation mode includes mock checkout screens.
 
 Use demo mode for:
 
-- CodeCanyon review.
 - Local testing.
-- Buyer onboarding.
+- Development.
+- Feature walkthroughs.
 
 Do not use demo mode for real payments.
 
@@ -1016,8 +1016,7 @@ Read `docs/ENVIRONMENT_VARIABLES.md` before going live.
 Demo mode is meant for:
 
 - Local evaluation.
-- CodeCanyon review.
-- Buyer testing.
+- Development and testing.
 - Feature walkthrough.
 
 Demo mode can include:

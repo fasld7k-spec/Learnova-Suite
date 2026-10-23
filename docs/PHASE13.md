@@ -8,4 +8,4 @@ Implemented:
 - Dynamic home hero powered by Slider records.
 - Dashboard menu updates.
 
-This phase improves CMS, support and marketing customization for CodeCanyon buyers.
+This phase improves CMS, support and marketing customization.

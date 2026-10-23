@@ -19,11 +19,11 @@ Modern minimalist dark interface with high-contrast product surfaces: dark backg
 ## 5. Included Modules
 Authentication, RBAC, public marketplace, course pages, instructor course builder, student learning area, checkout, orders, invoices, commissions, withdrawals, certificates, live sessions, notifications, Q&A, reviews, coupons, CMS pages, blog, settings, languages, currencies, payment method management, reporting, API routes and deployment documentation.
 
-## 6. CodeCanyon Readiness
+## 6. Developer Readiness
 Includes clean code, env sample, seeders, demo accounts, install docs, API docs, DB docs, customizable colors/logo/settings table and extendable payment gateways.
 
 ## 7. Security
 bcrypt password hashing, JWT HTTP-only cookies, role checks, Zod validation, Prisma parameterized queries, security headers, origin checks, rate limiting and signed webhook helpers. For production use HTTPS, strong secrets, configured gateway webhooks and private object storage for protected media.
 
-## Commercial Name Suggestion
-**Learnova Suite** - A production-oriented LMS marketplace platform for selling online courses and live classes with instructors, commissions and certificates.
+## About
+**Learnova Suite** - A free, open-source LMS marketplace platform for selling online courses and live classes with instructors, commissions and certificates.

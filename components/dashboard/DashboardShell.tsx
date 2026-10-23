@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { ReactNode } from 'react';
 import { ArrowUpRight, Bell, BookOpen, CalendarDays, GraduationCap, LogOut, MessageCircle, PanelLeft, Plus, Search, Trophy, UserRound } from 'lucide-react';
 import { CsrfInput } from '@/components/CsrfInput';
+import { AuthorCredit } from '@/components/dashboard/AuthorCredit';
 import { DashboardNav } from '@/components/dashboard/DashboardNav';
 import { requireUser } from '@/lib/auth';
 import { listHas } from '@/lib/json-fields';
@@ -271,6 +272,7 @@ export async function DashboardShell({ role, title, children }: { role: Dashboar
             </div>
           )}
           {children}
+          {role === 'admin' && <AuthorCredit />}
         </main>
       </div>
     </div>

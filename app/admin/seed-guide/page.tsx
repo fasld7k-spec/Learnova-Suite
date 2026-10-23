@@ -36,10 +36,10 @@ export default async function SeedGuide() {
             <div className="flex h-12 w-12 items-center justify-center rounded-full border border-[#2A3037] bg-[#101317] text-[#79C7FF]">
               <BookOpenCheck size={22} strokeWidth={1.8} />
             </div>
-            <p className="mt-5 text-sm font-black uppercase tracking-wide text-[#79C7FF]">Reviewer preview</p>
+            <p className="mt-5 text-sm font-black uppercase tracking-wide text-[#79C7FF]">Demo preview</p>
             <h2 className="mt-2 text-2xl font-black leading-tight text-white">Use prepared preview accounts</h2>
             <p className="mt-3 max-w-2xl text-sm leading-6 text-[#8A949E]">
-              These seeded roles let reviewers test admin operations, instructor publishing, and student learning without manual setup.
+              These seeded roles let you test admin operations, instructor publishing, and student learning without manual setup.
             </p>
           </div>
 
@@ -69,7 +69,7 @@ export default async function SeedGuide() {
               <Badge tone={previewMode ? 'green' : 'yellow'}>{previewMode ? 'Preview data enabled' : 'Preview data disabled'}</Badge>
             </div>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-[#8A949E]">
-              Refresh prepared preview records from the terminal during installation, QA, or reviewer preparation. Browser-triggered database resets are not exposed in this package.
+              Refresh prepared preview records from the terminal during installation or QA. Browser-triggered database resets are not exposed in this package.
             </p>
           </div>
           <div className="grid gap-3">

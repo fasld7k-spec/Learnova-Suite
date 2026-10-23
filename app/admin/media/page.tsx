@@ -60,7 +60,7 @@ export default async function MediaLibrary(props: { searchParams?: Promise<{ upl
             <label className="grid gap-2 text-sm font-bold text-[#D7DEE4]">
               Media file
               <input className="input" type="file" name="file" required />
-              <span className="text-xs leading-5 text-[#8A949E]">Use production-like files when preparing the reviewer demo.</span>
+              <span className="text-xs leading-5 text-[#8A949E]">Use production-like files when preparing a demo.</span>
             </label>
             <button className="btn-primary w-full sm:w-fit">Upload Media</button>
           </form>

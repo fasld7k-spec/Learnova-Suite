@@ -68,7 +68,7 @@ export default async function Settings(
             <h2 className="text-xl font-black text-white">{t('Brand and platform')}</h2>
           </div>
           <p className="mt-2 text-sm leading-6 text-[#71767B]">
-            Fill these fields with the buyer&apos;s real brand, public domain, logo paths, and support contacts. The public URL is used in emails, certificates, OAuth redirects, webhooks, SEO links, and payment callbacks.
+            Fill these fields with your real brand, public domain, logo paths, and support contacts. The public URL is used in emails, certificates, OAuth redirects, webhooks, SEO links, and payment callbacks.
           </p>
           <div className="mt-5 grid gap-4 md:grid-cols-2">
             <label className="text-sm font-bold text-[#E7E9EA]">{t('Site name')}<input className="input mt-2" name="siteName" defaultValue={v.siteName || 'Learnova Suite'} /></label>

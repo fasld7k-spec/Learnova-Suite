@@ -32,7 +32,7 @@ export default async function ProductUpdates() {
             <p className="text-xs font-bold uppercase text-[#71767B]">Release notes</p>
             <h2 className="mt-1 text-2xl font-black text-white">Publish a product update</h2>
             <p className="mt-2 text-sm leading-6 text-[#71767B]">
-              A visible changelog helps buyers trust that Learnova Suite is maintained, documented and ready for commercial operation.
+              A visible changelog helps your users see that the platform is maintained and improving.
             </p>
           </div>
           <div className="grid gap-3 md:grid-cols-[180px_1fr]">
@@ -47,7 +47,7 @@ export default async function ProductUpdates() {
         </form>
 
         <aside className="border border-[#2F3336] bg-black p-5">
-          <p className="text-xs font-bold uppercase text-[#71767B]">Buyer confidence</p>
+          <p className="text-xs font-bold uppercase text-[#71767B]">User confidence</p>
           <h3 className="mt-1 text-xl font-black text-white">Changelog readiness</h3>
           <div className="mt-4 space-y-3 text-sm text-[#E7E9EA]">
             <div className="flex items-center justify-between gap-3">

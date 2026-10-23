@@ -1,6 +1,6 @@
 # Third-Party Notices
 
-Learnova Suite uses open-source npm packages. The buyer installs them from the npm registry with `npm install`; `node_modules` is not included in the CodeCanyon ZIP.
+Learnova Suite uses open-source npm packages. They are installed from the npm registry with `npm install`; `node_modules` is not committed to the repository.
 
 ## Direct Runtime Dependencies
 

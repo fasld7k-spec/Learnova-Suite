@@ -25,7 +25,7 @@ export default async function WhiteLabel({ searchParams }: { searchParams?: { sa
         <form className="card grid gap-4" action="/api/admin/white-label" method="post">
           <CsrfInput />
           <div>
-            <h2 className="text-xl font-black text-white">Buyer Branding</h2>
+            <h2 className="text-xl font-black text-white">Branding</h2>
             <p className="mt-2 text-sm leading-6 text-[#71767B]">
               These values override the public brand name, logo, favicon, support contact, and marketplace footer without editing code.
             </p>

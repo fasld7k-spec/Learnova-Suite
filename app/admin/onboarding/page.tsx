@@ -80,7 +80,7 @@ export default async function Onboarding({ searchParams }: { searchParams?: Prom
         <div className="flex flex-wrap items-start justify-between gap-4">
           <div>
             <p className="text-xs font-black uppercase tracking-[0.18em] text-[#71767B]">Launch workflow</p>
-            <h2 className="mt-2 text-2xl font-black text-white">Buyer-ready setup control</h2>
+            <h2 className="mt-2 text-2xl font-black text-white">Setup control</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-[#71767B]">
               Automatic checks read real platform configuration. Manual sign-offs let the owner confirm review-only tasks such as legal pages, demo credentials, and package readiness.
             </p>

@@ -4,7 +4,7 @@ Use this guide when you want the shortest safe installation path. For the full d
 
 ## 1. Local Demo Install
 
-Local demo mode is intended for buyer review, CodeCanyon review, and development.
+Local demo mode is intended for evaluation and development.
 
 Requirements:
 

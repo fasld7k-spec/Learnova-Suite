@@ -2,7 +2,7 @@
 
 ## One-command Demo Setup
 
-Use this path for CodeCanyon review, local demos, and buyer evaluation.
+Use this path for local development and demos.
 
 ```bash
 npm install

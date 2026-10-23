@@ -5,4 +5,4 @@ Implemented:
 - Added public demo accounts page.
 - Added buyer FAQ page.
 
-This phase improves CodeCanyon buyer presentation and build stability.
+This phase improves presentation and build stability.

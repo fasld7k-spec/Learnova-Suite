@@ -6,4 +6,4 @@ Implemented:
 - End-to-end flow documentation.
 - Separate admin, instructor and student manuals.
 
-This phase improves buyer onboarding and demo readiness for CodeCanyon.
+This phase improves onboarding and demo readiness.

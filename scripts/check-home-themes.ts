@@ -78,7 +78,6 @@ for (const layout of new Set(homeThemeRegistry.map((theme) => theme.layout))) {
 
 const smoke = read('scripts/smoke-demo.mjs');
 const visualCheck = read('scripts/check-home-theme-visuals.mjs');
-const finalGate = read('scripts/final-submission-check.ps1');
 const packageJson = JSON.parse(read('package.json')) as { scripts?: Record<string, string> };
 for (const id of ids) {
   if (!smoke.includes(`previewTheme=${id}`)) fail(`Smoke test does not preview ${id}.`);
@@ -94,10 +93,6 @@ for (const theme of homeThemeRegistry) {
 
 if (packageJson.scripts?.['themes:visual-check'] !== 'node scripts/check-home-theme-visuals.mjs') {
   fail('package.json must expose themes:visual-check for browser-based homepage QA.');
-}
-
-if (!finalGate.includes('Homepage visual QA') || !finalGate.includes('npm run themes:visual-check')) {
-  fail('Final submission gate must run Homepage visual QA after production build.');
 }
 
 const docs = read('docs/home-theme-system.md');

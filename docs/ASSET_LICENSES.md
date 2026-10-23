@@ -1,6 +1,6 @@
 # Asset Licenses And Credits
 
-This file is included to make the CodeCanyon review and buyer handoff clear.
+This file explains which assets are included in the repository and how to replace them.
 
 ## Included With The Download
 
@@ -12,7 +12,7 @@ This file is included to make the CodeCanyon review and buyer handoff clear.
 
 - No premium third-party templates, marketplace items, paid media packs, stock videos, or paid icon packs are included.
 - No payment gateway account, SMTP account, video streaming account, AI provider key, S3/R2 bucket, analytics account, or live domain is included.
-- Demo screenshots created during development are excluded from the CodeCanyon package.
+- Demo screenshots created during development are not included in the repository.
 
 ## Buyer Responsibilities
 
@@ -30,4 +30,4 @@ This file is included to make the CodeCanyon review and buyer handoff clear.
 
 The packaged `preview.png`, `thumbnail.png`, and screenshot archive are generated from the included Learnova Suite demo UI. They do not rely on a paid third-party template, premium stock pack, or external marketplace asset.
 
-If you use different assets in a hosted live preview or CodeCanyon item screenshots, list those preview-only assets in the item description and state whether they are included in the download.
+If you use different assets in a hosted demo or screenshots, make sure you have the right to use them and credit them where required.

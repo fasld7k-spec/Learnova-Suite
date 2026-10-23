@@ -1,7 +1,7 @@
 # Phase 6 Development Report
 
 Added:
-- CodeCanyon packaging script and `.gitignore`.
+- Packaging script and `.gitignore`.
 - Docker Compose PostgreSQL for easy buyer setup.
 - Permission map and rate-limit helper foundation.
 - Upload validation API.

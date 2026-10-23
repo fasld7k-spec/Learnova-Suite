@@ -25,9 +25,9 @@ This file explains exactly how to run Learnova locally, deploy it to a productio
 
 ## 2. Run The Website Locally In Demo Mode
 
-Demo mode is intended for local testing, buyer review and CodeCanyon review.
+Demo mode is intended for local testing and evaluation.
 
-If you downloaded the CodeCanyon package, extract `Learnova-Suite-Complete-Buyer-Package.zip` first, then open a terminal in the extracted project folder.
+Clone the repository (`git clone https://github.com/fasld7k-spec/Learnova-Suite.git`), then open a terminal in the project folder.
 
 Open a terminal in the project folder and run:
 

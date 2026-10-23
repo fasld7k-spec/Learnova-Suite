@@ -75,7 +75,7 @@ async function environmentChecks(): Promise<LaunchCheck[]> {
     check('SETTINGS_ENCRYPTION_KEY', env.settingsEncryptionReady, env.productionRuntime ? 'Required in production for encrypted admin integration secrets.' : 'Optional in demo; add it before production.'),
     check('CONTENT_PROTECTION_SECRET', env.contentProtectionReady, env.productionRuntime ? 'Required in production for signed protected media links.' : 'Optional in demo; add it before production.'),
     check('Public site URL', true, settings.publicAppUrl ? 'Configured from admin settings.' : 'Optional: the app can auto-detect the current domain; set a URL for stable callbacks behind proxies.', !(settings.publicAppUrl || process.env.NEXT_PUBLIC_APP_URL)),
-    check('Demo mode', env.demoMode, env.demoMode ? 'Correct for CodeCanyon demo.' : 'Turn on only for demo installs.', !env.demoMode),
+    check('Demo mode', env.demoMode, env.demoMode ? 'Correct for a local demo.' : 'Turn on only for demo installs.', !env.demoMode),
     check('Payment sandbox', env.sandboxPayments, env.sandboxPayments ? 'Safe for demo checkout.' : 'Production/live payment mode.', !env.sandboxPayments),
     check('Production live switches', env.productionSwitchesReady, env.productionRuntime ? 'Production must run with DEMO_MODE=false, PAYMENT_SANDBOX_MODE=false, and ALLOW_PRODUCTION_DEMO_PAYMENTS=false.' : 'Local demo runtime detected.', !env.productionRuntime),
     check('PostgreSQL production database', env.postgresReady, env.productionRuntime ? 'DATABASE_URL must use PostgreSQL in production.' : 'Local demo database is allowed.', !env.productionRuntime),
@@ -124,10 +124,10 @@ function WizardSteps({ steps }: { steps: InstallationStep[] }) {
   return (
     <section className="moe-panel overflow-hidden">
       <div className="border-b border-violet-300/15 p-5">
-        <p className="text-sm font-bold text-violet-200">Buyer setup wizard</p>
+        <p className="text-sm font-bold text-violet-200">Setup wizard</p>
         <h2 className="mt-1 text-2xl font-black text-white">Install in five clear steps</h2>
         <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
-          This wizard mirrors the README flow so buyers can verify their hosting setup without reading code or exposing secrets.
+          This wizard mirrors the README flow so you can verify your hosting setup without reading code or exposing secrets.
         </p>
       </div>
       <div className="grid divide-y divide-violet-300/15 lg:grid-cols-5 lg:divide-x lg:divide-y-0">
@@ -174,7 +174,7 @@ export default async function InstallCheck() {
       title: 'Prepare database',
       status: dbReady ? 'Ready' : 'Review',
       tone: dbReady ? 'green' : 'red',
-      detail: 'Run Prisma migrations and seed demo data so the buyer can test admin, instructor, and student flows.'
+      detail: 'Run Prisma migrations and seed demo data so you can test admin, instructor, and student flows.'
     },
     {
       number: '04',
@@ -188,7 +188,7 @@ export default async function InstallCheck() {
       title: 'Run final checks',
       status: failed ? 'Blocked' : warnings ? 'Demo ready' : 'Ready',
       tone: failed ? 'red' : warnings ? 'yellow' : 'green',
-      detail: 'Use demo:doctor, release:check, demo:dev, and demo:smoke before sending the buyer to production setup.'
+      detail: 'Use demo:doctor, release:check, demo:dev, and demo:smoke before moving to production setup.'
     }
   ];
 

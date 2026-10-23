@@ -4,12 +4,12 @@ import { Nav } from '@/components/Nav';
 
 const faqs = [
   [
-    'Is this ready for CodeCanyon?',
-    'Yes. The project includes source code, seed data, buyer documentation, install steps, build validation, and marketplace-safe defaults.',
+    'Is Learnova Suite free to use?',
+    'Yes. It is open source under the Apache License 2.0, so you can use, modify and deploy it, including for commercial projects, as long as you keep the license and NOTICE files.',
   ],
   [
     'Does it include real payment gateways?',
-    'It includes demo checkout, offline/manual payment flows, and Stripe/PayPal production foundations. Buyers should configure provider credentials and complete gateway sandbox QA before accepting live payments.',
+    'It includes demo checkout, offline/manual payment flows, and Stripe/PayPal production foundations. Configure provider credentials and complete gateway sandbox QA before accepting live payments.',
   ],
   [
     'Can I customize branding?',
@@ -31,9 +31,9 @@ export default function BuyerFaq() {
           <span className="moe-mini-icon h-12 w-12">
             <CircleHelp size={23} />
           </span>
-          <h1 className="mt-5 text-5xl font-black">Buyer FAQ</h1>
+          <h1 className="mt-5 text-5xl font-black">FAQ</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
-            Common product, marketplace, payment, localization, and deployment questions for marketplace buyers.
+            Common product, payment, localization, and deployment questions about Learnova Suite.
           </p>
           </div>
         </section>

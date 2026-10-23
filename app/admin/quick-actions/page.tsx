@@ -39,7 +39,7 @@ export default async function QuickActions() {
             <p className="text-xs font-black uppercase tracking-[0.18em] text-[#71767B]">One-click operations</p>
             <h2 className="mt-2 text-2xl font-black text-white">Run common admin tasks</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-[#71767B]">
-              These shortcuts call the same backed admin endpoints used in the deeper modules, so buyers can verify real actions quickly.
+              These shortcuts call the same backed admin endpoints used in the deeper modules, so admins can verify real actions quickly.
             </p>
           </div>
           <div className="flex flex-wrap gap-2">

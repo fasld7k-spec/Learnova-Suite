@@ -18,7 +18,7 @@ const frameworkErrorPattern = /Application error|Internal Server Error|This page
 const routeChecks = [
   { route: '/', includes: [/Learnova Suite/] },
   { route: '/demo', includes: [/demo/i] },
-  { route: '/documentation', includes: [/Public documentation|Included buyer documentation/] },
+  { route: '/documentation', includes: [/Public documentation|Included documentation/] },
   { route: '/courses', includes: [/course/i] },
   { route: '/courses/nextjs-saas-masterclass', includes: [/Next\.js|Masterclass|course/i] },
   { route: '/live-sessions', includes: [/live/i] },

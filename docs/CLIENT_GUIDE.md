@@ -1,10 +1,10 @@
 # Learnova Suite Client Guide
 
-Thank you for purchasing Learnova Suite. This guide explains the fastest way to install, test, configure and launch the platform.
+Thank you for using Learnova Suite. This guide explains the fastest way to install, test, configure and launch the platform.
 
-## 1. What You Received
+## 1. What Is Included
 
-The buyer package includes:
+The repository includes:
 
 - Full Next.js 16 source code.
 - Complete platform manual in `docs/COMPLETE_PLATFORM_MANUAL.md`.
@@ -13,7 +13,7 @@ The buyer package includes:
 - Prisma PostgreSQL schema and production schema sync command.
 - Admin, Instructor and Student dashboards.
 - Course marketplace, checkout foundations, certificates, live sessions, messages, notifications, add-ons and themes.
-- Buyer documentation in `/docs`.
+- Documentation in `/docs`.
 - HTML documentation in `/documentation/index.html`.
 - Environment examples: `.env.example`, `.env.demo.example`, `.env.production.example`.
 

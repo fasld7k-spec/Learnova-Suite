@@ -1,7 +1,7 @@
 ﻿# Deployment Guide
 
 ## Demo vs Production
-Use SQLite only for local demos and CodeCanyon review. Use PostgreSQL for production.
+Use SQLite only for local development and demos. Use PostgreSQL for production.
 
 ## Vercel + Managed PostgreSQL
 1. Push the project to GitHub.

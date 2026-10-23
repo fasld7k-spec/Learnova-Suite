@@ -119,7 +119,7 @@ export default async function Demo() {
         </section>
 
         <section className="page-shell mt-12">
-          <h2 className="text-3xl font-black text-white">Fast checks for buyers and evaluators</h2>
+          <h2 className="text-3xl font-black text-white">Fast checks for evaluators</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {adminChecks.map((item) => {
               const Icon = item.icon;

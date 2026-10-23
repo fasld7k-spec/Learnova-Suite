@@ -19,7 +19,7 @@ export default async function Updates() {
             </span>
             <h1 className="mt-5 text-5xl font-black text-white">Product Updates</h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-slate-300">
-              A polished release timeline for buyers, admins, instructors, and students.
+              A polished release timeline for admins, instructors, and students.
             </p>
           </div>
         </section>

@@ -1,6 +1,6 @@
 # Demo Credentials
 
-Use these credentials for CodeCanyon review, buyer evaluation, and local demo testing.
+Use these credentials for local evaluation and demo testing only.
 
 | Role | URL | Email | Password |
 |---|---|---|---|

@@ -44,10 +44,10 @@ export default async function Roadmap() {
         <form className="border border-[#2F3336] bg-black p-5" action="/api/admin/roadmap" method="post">
           <CsrfInput />
           <div className="mb-5">
-            <p className="text-xs font-black uppercase tracking-wide text-[#71767B]">Buyer readiness</p>
+            <p className="text-xs font-black uppercase tracking-wide text-[#71767B]">Readiness</p>
             <h2 className="mt-1 text-2xl font-black text-white">Add roadmap item</h2>
             <p className="mt-2 text-sm leading-6 text-[#71767B]">
-              This page is now admin-managed. Use it to describe what is complete, configurable, planned, or paused for buyers and reviewers.
+              This page is now admin-managed. Use it to describe what is complete, configurable, planned, or paused for your team and users.
             </p>
           </div>
           <div className="grid gap-3 md:grid-cols-[1fr_180px_120px]">
@@ -58,7 +58,7 @@ export default async function Roadmap() {
             <input className="input" name="sortOrder" type="number" placeholder="Sort" defaultValue={(items.length + 1) * 10} />
           </div>
           <input className="input mt-3" name="href" placeholder="/admin/mobile-app" defaultValue="/admin/roadmap" required />
-          <textarea className="input mt-3 min-h-28" name="description" placeholder="Explain what is included and how buyers can configure it." required />
+          <textarea className="input mt-3 min-h-28" name="description" placeholder="Explain what is included and how admins can configure it." required />
           <label className="mt-4 flex w-fit items-center gap-2 border border-[#2F3336] px-4 py-3 text-sm font-bold text-[#E7E9EA]">
             <input type="checkbox" name="active" defaultChecked /> Active
           </label>

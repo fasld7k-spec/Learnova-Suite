@@ -11,7 +11,7 @@ const defaultLaunchSignoffs = [
   { title: 'Demo credentials verified', sortOrder: 20 },
   { title: 'Checkout sandbox tested', sortOrder: 30 },
   { title: 'Support policy reviewed', sortOrder: 40 },
-  { title: 'CodeCanyon package files checked', sortOrder: 50 },
+  { title: 'Production environment variables checked', sortOrder: 50 },
 ];
 
 export async function POST(req: NextRequest) {

@@ -114,7 +114,7 @@ Run `npm run themes:visual-check` against a running local or hosted demo to veri
 BASE_URL=http://127.0.0.1:3000 npm run themes:visual-check
 ```
 
-The visual check opens all seven `/?previewTheme=theme-id` pages at desktop and mobile viewport sizes. It fails if a theme has horizontal overflow, a missing hero title, a missing primary CTA, an incorrect `data-home-theme-layout`, or a broken first hero section. The final CodeCanyon gate starts a local production server and runs this check automatically after `npm run demo:build`.
+The visual check opens all seven `/?previewTheme=theme-id` pages at desktop and mobile viewport sizes. It fails if a theme has horizontal overflow, a missing hero title, a missing primary CTA, an incorrect `data-home-theme-layout`, or a broken first hero section.
 
 ## Admin Controls
 

@@ -1,4 +1,4 @@
-﻿# Learnova Suite Buyer Documentation
+﻿# Learnova Suite - Getting Started
 
 Learnova Suite is a Next.js 16 live learning marketplace SaaS for courses, cohorts, instructor-led sessions, student dashboards, certificates, messaging, notifications, payments, and admin operations.
 
@@ -12,7 +12,6 @@ Read these files first:
 - `docs/ENVIRONMENT_VARIABLES.md` - every important environment variable.
 - `docs/PRODUCTION_READINESS.md` - live launch checklist.
 - `docs/PAYMENT_GATEWAYS.md` - payment gateway setup notes.
-- `docs/MARKETPLACE_LICENSE.md` - buyer license and support scope notes.
 - `docs/ASSET_LICENSES.md` - asset and preview-image guidance.
 
 ## Local Evaluation Start
@@ -183,9 +182,7 @@ Most site content is managed through Admin screens:
 
 Developers can customize Tailwind tokens in `tailwind.config.ts`, global CSS in `app/globals.css`, and React components in `app/` and `components/`.
 
-## Support Scope
+## Support
 
-Included support covers installation guidance, configuration clarification, bug reports related to the included source, and documentation questions. It does not include creating third-party accounts, custom feature development, server administration, or payment-provider business approval.
-
-Read `docs/SUPPORT_POLICY.md` for the full support scope.
+Learnova Suite is a free, open-source project. Ask questions and report bugs through GitHub issues, and see `CONTRIBUTING.md` if you want to contribute a fix or feature.
 

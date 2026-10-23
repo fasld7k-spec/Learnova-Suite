@@ -7,7 +7,7 @@ const releases = [
     version: '1.0.0',
     title: 'Marketplace-ready LMS release',
     body:
-      'Initial release with course marketplace flows, student/instructor/admin dashboards, course builder, live classes, Stripe and PayPal production adapters, offline payments, certificates, subscriptions, quizzes, bundles, CMS, SEO, storage, email, and buyer documentation.',
+      'Initial release with course marketplace flows, student/instructor/admin dashboards, course builder, live classes, Stripe and PayPal production adapters, offline payments, certificates, subscriptions, quizzes, bundles, CMS, SEO, storage, email, and documentation.',
   },
 ];
 
@@ -23,7 +23,7 @@ export default function Changelog() {
             </span>
           <h1 className="mt-5 text-5xl font-black text-white">Changelog</h1>
           <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-300">
-            Buyer-facing updates, production readiness notes, and platform improvements.
+            Release updates, production readiness notes, and platform improvements.
           </p>
           </div>
         </section>

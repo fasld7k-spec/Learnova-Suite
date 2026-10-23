@@ -12,7 +12,7 @@ const guides = [
   },
   {
     title: 'Demo credentials',
-    description: 'Review the prepared Admin, Instructor and Student accounts used for CodeCanyon evaluation.',
+    description: 'Review the prepared Admin, Instructor and Student accounts used for local evaluation.',
     href: '/demo',
     icon: KeyRound
   },
@@ -36,7 +36,7 @@ const guides = [
   },
   {
     title: 'Support policy',
-    description: 'Understand included support, buyer responsibilities and production deployment boundaries.',
+    description: 'Understand your responsibilities and production deployment boundaries before going live.',
     href: '/support',
     icon: LifeBuoy
   }
@@ -46,7 +46,7 @@ const includedDocs = [
   'docs/COMPLETE_PLATFORM_MANUAL.md',
   'docs/QUICK_INSTALL.md',
   'docs/RUN_AND_DEPLOY_STEPS.md',
-  'docs/BUYER_DOCUMENTATION.md',
+  'docs/GETTING_STARTED.md',
   'docs/PRODUCTION_READINESS.md',
   'docs/PAYMENT_GATEWAYS.md',
   'docs/ASSET_LICENSES.md',
@@ -66,10 +66,10 @@ export default function DocumentationPage() {
             </span>
             <p className="mt-6 text-sm font-black uppercase tracking-[0.16em] text-violet-300">Public documentation</p>
             <h1 className="mt-2 max-w-3xl text-4xl font-black leading-tight text-white sm:text-5xl">
-              Learnova Suite buyer guide
+              Learnova Suite documentation
             </h1>
             <p className="mt-4 max-w-2xl text-base leading-7 text-slate-300">
-              Use this online index with the hosted demo, then open the full Markdown documentation included inside the buyer package.
+              Use this online index with the hosted demo, then open the full Markdown documentation in the repository.
             </p>
           </div>
           <div className="grid content-center gap-3 bg-white/[0.03] p-8">
@@ -98,9 +98,9 @@ export default function DocumentationPage() {
 
         <section className="page-shell mt-8">
         <div className="moe-panel p-6">
-          <h2 className="text-2xl font-black text-white">Included buyer documentation</h2>
+          <h2 className="text-2xl font-black text-white">Included documentation</h2>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-300">
-            The CodeCanyon package includes the complete source code and a documentation archive. These files explain installation, customization, deployment, assets, third-party notices and support scope.
+            The repository includes the complete source code and documentation. These files explain installation, customization, deployment, assets and third-party notices.
           </p>
           <div className="mt-5 grid gap-3 md:grid-cols-2">
             {includedDocs.map((doc) => (

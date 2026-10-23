@@ -11,7 +11,7 @@ Learnova Suite includes a safe add-ons center that lets admins register, upload,
 5. Activate or disable the add-on at any time.
 6. If the manifest includes a webhook URL, use **Test webhook** from the row actions to send a signed `addon.test` event.
 
-Uploaded add-ons are stored as metadata and settings. The platform does not execute arbitrary uploaded code at runtime. This is intentional for security and CodeCanyon buyer safety.
+Uploaded add-ons are stored as metadata and settings. The platform does not execute arbitrary uploaded code at runtime. This is intentional for security.
 
 ## Manifest Format
 

@@ -242,7 +242,7 @@ requireSourceIncludes('lib/production-readiness.ts', 'productionReadinessRows', 
 requireSourceIncludes('lib/production-readiness.ts', 'PostgreSQL database', 'production readiness must check PostgreSQL for live deployments.');
 requireSourceIncludes('lib/production-readiness.ts', 'Live payment credentials', 'production readiness must check live payment provider credentials.');
 requireSourceIncludes('app/admin/release-checklist/page.tsx', 'productionReadinessRows', 'release checklist must include reusable production preflight checks.');
-requireSourceIncludes('app/admin/release-checklist/page.tsx', 'csrfToken', 'release checklist mutating forms must include CSRF tokens.');
+requireSourceIncludes('app/admin/release-checklist/page.tsx', 'CsrfInput', 'release checklist mutating forms must include CSRF tokens.');
 requireSourceIncludes('app/api/admin/release-checklist/route.ts', 'verifyCsrf', 'release checklist updates must verify CSRF tokens.');
 requireSourceIncludes('app/admin/system-info/page.tsx', 'Production preflight', 'system info must expose production preflight status.');
 requireSourceIncludes('app/admin/coupon-redemptions/page.tsx', 'Active reservations', 'coupon redemptions page must distinguish paid redemptions from active reservations.');

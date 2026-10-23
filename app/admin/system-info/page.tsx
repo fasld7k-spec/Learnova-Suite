@@ -83,7 +83,7 @@ export default async function SystemInfo() {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <h2 className="text-lg font-black text-white">Production preflight</h2>
-            <p className="mt-1 text-sm text-[#71767B]">Same checks as the buyer-facing production readiness model, without exposing secrets.</p>
+            <p className="mt-1 text-sm text-[#71767B]">Same checks as the production readiness model, without exposing secrets.</p>
           </div>
           <Badge tone={productionReadyCount === productionRows.length ? 'green' : 'yellow'}>
             {productionReadyCount}/{productionRows.length} ready
@@ -119,7 +119,7 @@ export default async function SystemInfo() {
           <div>
             <h2 className="text-xl font-black text-white">Runtime summary</h2>
             <p className="mt-2 text-sm leading-6 text-[#71767B]">
-              This screen is generated from live environment variables, site settings, and database counts so buyers can verify an installation after changing domains, storage, payment, or email configuration.
+              This screen is generated from live environment variables, site settings, and database counts so admins can verify an installation after changing domains, storage, payment, or email configuration.
             </p>
           </div>
         </div>

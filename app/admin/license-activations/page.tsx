@@ -18,7 +18,7 @@ export default async function LicenseActivations() {
           <div>
             <h2 className="text-xl font-black text-white">Manual activation</h2>
             <p className="mt-2 text-sm leading-6 text-[#71767B]">
-              Add or correct buyer license activations when support needs to move a purchase code to a new domain.
+              Add or correct license activations when a license key needs to move to a new domain.
             </p>
             <div className="mt-3 flex flex-wrap gap-2">
               <Badge tone="green">{activeCount} active</Badge>
@@ -27,9 +27,9 @@ export default async function LicenseActivations() {
           </div>
           <form className="grid w-full gap-3 lg:max-w-3xl lg:grid-cols-[1fr_1fr_1fr_auto_auto]" action="/api/admin/license-activations" method="post">
           <CsrfInput />
-            <input className="input" name="purchaseCode" placeholder="Purchase code" required />
+            <input className="input" name="purchaseCode" placeholder="License key" required />
             <input className="input" name="domain" placeholder="example.com" required />
-            <input className="input" name="email" type="email" placeholder="buyer@example.com" />
+            <input className="input" name="email" type="email" placeholder="owner@example.com" />
             <label className="flex items-center gap-2 text-sm font-bold text-[#E7E9EA]">
               <input type="checkbox" name="active" defaultChecked /> Active
             </label>
@@ -39,7 +39,7 @@ export default async function LicenseActivations() {
       </section>
 
       <DataTable
-        headers={['Purchase Code', 'Domain', 'Email', 'Active', 'Date', 'Manage']}
+        headers={['License Key', 'Domain', 'Email', 'Active', 'Date', 'Manage']}
         rows={rows.map((license) => [
           <span key="code" className="font-mono text-xs font-black text-[#E7E9EA]">{`${license.purchaseCode.slice(0, 8)}...`}</span>,
           license.domain,

@@ -10,7 +10,7 @@ import { paymentMetadataWithAffiliate } from '@/lib/affiliate';
 import { appUrlFromRequest } from '@/lib/app-url';
 import { verifyCsrf } from '@/lib/csrf';
 import { featureEnabled } from '@/lib/features';
-import { priceCheckoutLines, resolveCheckoutPricingContext } from '@/lib/order-pricing';
+import { checkoutTaxCountry, priceCheckoutLines, resolveCheckoutPricingContext } from '@/lib/order-pricing';
 
 export async function POST(req: NextRequest) {
   try {
@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     const form = await req.formData();
     if (!(await verifyCsrf(String(form.get('csrfToken') || '')))) return fail('Invalid CSRF token.', 403);
     const settings = await getSiteSettings();
-    const pricingContext = await resolveCheckoutPricingContext(settings.currency, String(form.get('taxCountry') || '').trim().toUpperCase() || undefined);
+    const pricingContext = await resolveCheckoutPricingContext(settings.currency, checkoutTaxCountry(form.get('taxCountry'), req.headers));
     const bundleId = String(form.get('bundleId') || '');
     const gateway = normalizeGateway(String(form.get('gateway') || 'manual'));
     if (!bundleId) return fail('bundleId is required', 422);

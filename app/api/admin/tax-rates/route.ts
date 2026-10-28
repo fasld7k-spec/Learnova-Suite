@@ -48,7 +48,7 @@ export async function POST(req: NextRequest) {
     const percent = parsePercent(form);
     const active = form.get('active') === 'on';
     if (name.length < 2) return fail('Tax rule name is required.', 422);
-    if (!/^[A-Z]{2,3}$/.test(country)) return fail('Country must be a 2-3 letter code.', 422);
+    if (country !== '*' && !/^[A-Z]{2,3}$/.test(country)) return fail('Country must be a 2-3 letter code, or * for all countries.', 422);
 
     const data = { name, country, percent, active };
     if (action === 'update') {

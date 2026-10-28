@@ -6,6 +6,7 @@ import { appUrlFromRequest } from '@/lib/app-url';
 import { verifyCsrf } from '@/lib/csrf';
 import { featureEnabled } from '@/lib/features';
 import { NextRequest, NextResponse } from 'next/server';
+import { checkoutTaxCountry } from '@/lib/order-pricing';
 
 export async function POST(req: NextRequest) {
   try {
@@ -16,7 +17,7 @@ export async function POST(req: NextRequest) {
     const courseId = String(form.get('courseId') || '').trim();
     const gateway = String(form.get('gateway') || 'manual').trim() || 'manual';
     const couponCode = String(form.get('couponCode') || '').trim() || undefined;
-    const taxCountry = String(form.get('taxCountry') || '').trim().toUpperCase() || undefined;
+    const taxCountry = checkoutTaxCountry(form.get('taxCountry'), req.headers);
 
     if (!courseId) return fail('Course is required.', 422);
 

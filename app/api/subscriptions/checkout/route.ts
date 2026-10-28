@@ -8,7 +8,7 @@ import { createGatewaySession, ensureGatewayAvailable, normalizeGateway } from '
 import { prisma } from '@/lib/prisma';
 import { getSiteSettings } from '@/lib/site-settings';
 import { featureEnabled } from '@/lib/features';
-import { priceCheckoutLines, resolveCheckoutPricingContext } from '@/lib/order-pricing';
+import { checkoutTaxCountry, priceCheckoutLines, resolveCheckoutPricingContext } from '@/lib/order-pricing';
 
 function addInterval(from: Date, interval: string) {
   const endsAt = new Date(from);
@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
     if (!plan) return fail('Plan not found', 404);
 
     const basePrice = Number(plan.price || 0);
-    const pricingContext = await resolveCheckoutPricingContext(settings.currency, String(form.get('taxCountry') || '').trim().toUpperCase() || undefined);
+    const pricingContext = await resolveCheckoutPricingContext(settings.currency, checkoutTaxCountry(form.get('taxCountry'), req.headers));
     const pricing = priceCheckoutLines({ lines: [{ courseId: `subscription:${plan.id}`, amount: basePrice }], context: pricingContext });
     const price = pricing.total;
     const gateway = price <= 0 ? 'free' : selectedGateway;

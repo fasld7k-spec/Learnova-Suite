@@ -58,6 +58,26 @@ function allocateAmount(lines: Array<{ courseId: string; amount: number }>, amou
   return allocations;
 }
 
+/** Tax rate country that applies to every buyer without a country-specific rate. */
+export const ALL_COUNTRIES_TAX_CODE = '*';
+
+const geoCountryHeaders = ['cf-ipcountry', 'x-vercel-ip-country', 'cloudfront-viewer-country', 'x-country-code'];
+
+/**
+ * Billing country for tax: the value the buyer submitted, otherwise the country
+ * header added by a CDN (Cloudflare, Vercel, CloudFront). Checkout pages do not
+ * ask for a country by default, so the CDN header is what normally applies.
+ */
+export function checkoutTaxCountry(submitted: unknown, headers?: Pick<Headers, 'get'>) {
+  const explicit = String(submitted || '').trim().toUpperCase();
+  if (/^[A-Z]{2}$/.test(explicit)) return explicit;
+  for (const name of geoCountryHeaders) {
+    const value = headers?.get(name)?.trim().toUpperCase();
+    if (value && /^[A-Z]{2}$/.test(value) && value !== 'XX') return value;
+  }
+  return undefined;
+}
+
 export async function resolveCheckoutPricingContext(currency: string, taxCountry?: string | null): Promise<CheckoutPricingContext> {
   const normalizedCurrency = String(currency || 'USD').trim().toUpperCase();
   const normalizedCountry = String(taxCountry || '').trim().toUpperCase();
@@ -66,11 +86,20 @@ export async function resolveCheckoutPricingContext(currency: string, taxCountry
     prisma.taxRate.findMany({ where: { active: true }, orderBy: { createdAt: 'asc' } }).catch(() => []),
   ]);
   const exchangeRate = money(currencyRow?.exchangeRate) || 1;
-  const matchingTaxRates = normalizedCountry
-    ? activeTaxRates.filter((rate) => rate.country.toUpperCase() === normalizedCountry)
-    : activeTaxRates.length === 1
-      ? activeTaxRates
-      : [];
+  // Country-specific rates win; otherwise the "*" (all countries) rates apply. A single
+  // configured rate keeps applying to everyone, as before. Previously a missing country
+  // with several rates configured silently produced 0% tax for every buyer.
+  const countryRates = normalizedCountry
+    ? activeTaxRates.filter((rate) => rate.country.trim().toUpperCase() === normalizedCountry)
+    : [];
+  const fallbackRates = activeTaxRates.filter((rate) => rate.country.trim() === ALL_COUNTRIES_TAX_CODE);
+  const matchingTaxRates = countryRates.length
+    ? countryRates
+    : fallbackRates.length
+      ? fallbackRates
+      : activeTaxRates.length === 1
+        ? activeTaxRates
+        : [];
 
   return {
     currency: normalizedCurrency,

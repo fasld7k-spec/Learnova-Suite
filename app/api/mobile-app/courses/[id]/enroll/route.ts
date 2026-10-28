@@ -8,22 +8,23 @@ import {
 import { createGatewaySession } from "@/lib/payment-gateways";
 import { createOrderForCourse } from "@/lib/payments";
 import { prisma } from "@/lib/prisma";
+import { checkoutTaxCountry } from "@/lib/order-pricing";
 
 async function checkoutOptionsFromRequest(request: NextRequest) {
   const contentType = request.headers.get("content-type") || "";
-  if (!contentType.includes("application/json")) return {};
+  const headerCountry: { gateway?: string; couponCode?: string; taxCountry?: string } = {
+    taxCountry: checkoutTaxCountry(undefined, request.headers),
+  };
+  if (!contentType.includes("application/json")) return headerCountry;
 
   const body = await request.json().catch(() => null);
-  if (!body || typeof body !== "object") return {};
+  if (!body || typeof body !== "object") return headerCountry;
 
   const value = body as Record<string, unknown>;
   return {
     gateway: String(value.gateway || "manual").trim() || "manual",
     couponCode: String(value.couponCode || "").trim() || undefined,
-    taxCountry:
-      String(value.taxCountry || "")
-        .trim()
-        .toUpperCase() || undefined,
+    taxCountry: checkoutTaxCountry(value.taxCountry, request.headers),
   };
 }
 

@@ -42,7 +42,7 @@ export default async function TaxRates() {
           </div>
           <div className="grid gap-3 md:grid-cols-3">
             <input className="input" name="name" placeholder="VAT" required />
-            <input className="input" name="country" placeholder="US/SA/AE" required />
+            <input className="input" name="country" placeholder="US/SA/AE or * for all countries" required />
             <input className="input" name="percent" type="number" min="0" step="0.01" placeholder="15" required />
           </div>
           <label className="mt-4 flex w-fit items-center gap-2 border border-[#2F3336] px-4 py-3 text-sm font-bold text-[#E7E9EA]">

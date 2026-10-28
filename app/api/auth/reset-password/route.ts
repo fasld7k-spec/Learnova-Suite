@@ -1,11 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { fail, ok } from '@/lib/api';
-import { hashPassword, verifyPasswordResetToken } from '@/lib/auth';
+import { hashPassword, passwordFingerprint, verifyPasswordResetToken } from '@/lib/auth';
 import { rateLimit } from '@/lib/rate-limit';
+import { clientIp } from '@/lib/client-ip';
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 export async function POST(req: NextRequest) {
@@ -31,7 +32,7 @@ export async function POST(req: NextRequest) {
   try {
     const payload = await verifyPasswordResetToken(token);
     const user = await prisma.user.findUnique({ where: { id: payload.id } });
-    if (!user || user.email !== payload.email || user.passwordHash !== payload.passwordHash) throw new Error('INVALID_RESET_TOKEN');
+    if (!user || user.email !== payload.email || passwordFingerprint(user.passwordHash) !== payload.passwordFingerprint) throw new Error('INVALID_RESET_TOKEN');
 
     await prisma.user.update({ where: { id: user.id }, data: { passwordHash: await hashPassword(password), passwordChangedAt: new Date() } });
     if (acceptsHtml) return NextResponse.redirect(new URL('/login?status=password-reset', req.url), 303);

@@ -9,9 +9,10 @@ import { rateLimit } from '@/lib/rate-limit';
 import { appUrlFromRequest } from '@/lib/app-url';
 import { requestRedirectUrl } from '@/lib/redirect-url';
 import { anyFeatureEnabled, featureEnabled } from '@/lib/features';
+import { clientIp } from '@/lib/client-ip';
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 export async function POST(req: NextRequest) {

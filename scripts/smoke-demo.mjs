@@ -17,8 +17,8 @@ const publicChecks = [
   { path: '/?previewTheme=theme-7', includes: ['data-home-theme-id="theme-7"', 'data-home-theme-layout="learnova-default"'] },
   { path: '/courses', includes: ['Courses'] },
   { path: '/courses/nextjs-saas-masterclass', includes: ['Next.js SaaS Masterclass'] },
-  { path: '/demo', includes: ['Reviewer path', 'Suggested QA journey', 'admin@demo.com'] },
-  { path: '/documentation', includes: ['Public documentation', 'Included buyer documentation'] },
+  { path: '/demo', includes: ['Fast checks for evaluators', 'Suggested QA journey', 'admin@demo.com'] },
+  { path: '/documentation', includes: ['Public documentation', 'Included documentation'] },
   { path: '/instructors', includes: ['Instructor'] },
   { path: '/live-sessions', includes: ['Live'] },
   { path: '/login', includes: ['/api/auth/login', 'name="email"', 'name="password"'] },
@@ -71,7 +71,7 @@ const roleChecks = [
       { path: '/admin/notifications', includes: ['Notification operations', 'Notification control center'] },
       { path: '/admin/messages', includes: ['Admin message operations', 'Conversation health'] },
       { path: '/admin/support', includes: ['Support command center', 'Support health'] },
-      { path: '/admin/push-campaigns', includes: ['Push Campaigns', 'Send immediately and create live notifications'] }
+      { path: '/admin/push-campaigns', includes: ['Push Campaigns', 'Send immediately and create in-app notifications'] }
     ]
   },
   {

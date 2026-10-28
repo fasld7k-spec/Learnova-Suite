@@ -9,6 +9,7 @@ import { resolveAppUrl } from "@/lib/app-url";
 import { fromJsonArray } from "@/lib/json-fields";
 import { studentForRequest } from "@/lib/mobile-app-adapter";
 import { prisma } from "@/lib/prisma";
+import { isLessonDripUnlocked } from "@/lib/drip-access";
 
 type QuizQuestion = {
   q?: string;
@@ -88,6 +89,9 @@ export async function GET(
   });
   if (!lesson.isPreview && !enrollment) {
     return fail("Course enrollment is required for this lesson.", 403);
+  }
+  if (!lesson.isPreview && !(await isLessonDripUnlocked({ userId: student.id, courseId: course.id, lessonId: lesson.id }))) {
+    return fail("Lesson is not unlocked yet.", 403);
   }
 
   const [resources, bookmark, quizzes, assignments] = await Promise.all([

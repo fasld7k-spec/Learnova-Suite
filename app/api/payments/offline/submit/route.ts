@@ -3,7 +3,7 @@ import { fail } from '@/lib/api';
 import { audit } from '@/lib/audit';
 import { requireUser } from '@/lib/auth';
 import { verifyCsrf } from '@/lib/csrf';
-import { toJson } from '@/lib/json-fields';
+import { fromJsonObject, toJson } from '@/lib/json-fields';
 import { prisma } from '@/lib/prisma';
 
 export async function POST(req: NextRequest) {
@@ -20,12 +20,15 @@ export async function POST(req: NextRequest) {
     if (!order) return fail('Order not found', 404);
     if (order.status === 'PAID') return fail('This order is already paid.', 409);
 
-    const offlineReference = String(form.get('reference') || '').trim();
-    const offlineNote = String(form.get('note') || '').trim();
+    const offlineReference = String(form.get('reference') || '').trim().slice(0, 200);
+    const offlineNote = String(form.get('note') || '').trim().slice(0, 2000);
+    const payment = await prisma.payment.findUnique({ where: { orderId: order.id }, select: { metadata: true } });
     await prisma.payment.update({
       where: { orderId: order.id },
       data: {
+        // Merge, don't replace: subscriptionId, couponId and affiliate fields must survive until approval.
         metadata: toJson({
+          ...fromJsonObject<Record<string, unknown>>(payment?.metadata),
           offlineReference,
           offlineNote,
           submittedAt: new Date().toISOString(),

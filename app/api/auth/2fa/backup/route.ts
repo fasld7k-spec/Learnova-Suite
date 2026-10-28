@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { authCookieName, clearCookieOptions, createToken, secureCookieOptions, twoFactorChallengeCookieName, verifyTwoFactorChallengeToken, type Role } from '@/lib/auth';
+import { authCookieName, clearCookieOptions, createToken, secureCookieOptions, passwordFingerprint, twoFactorChallengeCookieName, verifyTwoFactorChallengeToken, type Role } from '@/lib/auth';
 import { verifyBackupCode } from '@/lib/2fa';
 import { fail } from '@/lib/api';
 import { enforceRateLimit } from '@/lib/request-security';
@@ -59,7 +59,7 @@ export async function POST(req: NextRequest) {
   if (['SUSPENDED', 'REJECTED'].includes(twoFactor.user.status)) {
     return fail('Account is not active', 403);
   }
-  if (challenge.passwordHash !== twoFactor.user.passwordHash) {
+  if (challenge.passwordFingerprint !== passwordFingerprint(twoFactor.user.passwordHash)) {
     return fail('Two-factor login challenge is stale', 401);
   }
 

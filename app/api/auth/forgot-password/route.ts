@@ -6,9 +6,11 @@ import { renderEmailTemplate, sendEmail } from '@/lib/email';
 import { rateLimit } from '@/lib/rate-limit';
 import { createPasswordResetToken } from '@/lib/auth';
 import { appUrlFromRequest } from '@/lib/app-url';
+import { clientIp } from '@/lib/client-ip';
+import { getSiteSettings } from '@/lib/site-settings';
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 function canExposeDemoResetToken() {
@@ -32,7 +34,7 @@ export async function POST(req: NextRequest) {
 
   let resetToken = '';
   if (user) {
-    const appUrl = appUrlFromRequest(req);
+    const appUrl = appUrlFromRequest(req, (await getSiteSettings()).publicAppUrl);
     resetToken = await createPasswordResetToken({ id: user.id, email: user.email, passwordHash: user.passwordHash });
     const resetUrl = `${appUrl}/reset-password?token=${encodeURIComponent(resetToken)}`;
     const emailContent = await renderEmailTemplate('password-reset', {

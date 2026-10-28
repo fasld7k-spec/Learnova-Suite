@@ -5,13 +5,11 @@ import { createPasswordResetToken } from "@/lib/auth";
 import { renderEmailTemplate, sendEmail } from "@/lib/email";
 import { prisma } from "@/lib/prisma";
 import { rateLimit } from "@/lib/rate-limit";
+import { clientIp } from "@/lib/client-ip";
+import { getSiteSettings } from "@/lib/site-settings";
 
 function requestIp(req: NextRequest) {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "local"
-  );
+  return clientIp(req.headers);
 }
 
 function isValidEmail(email: string) {
@@ -37,7 +35,7 @@ export async function POST(req: NextRequest) {
       email: user.email,
       passwordHash: user.passwordHash,
     });
-    const resetUrl = `${appUrlFromRequest(req)}/reset-password?token=${encodeURIComponent(resetToken)}`;
+    const resetUrl = `${appUrlFromRequest(req, (await getSiteSettings()).publicAppUrl)}/reset-password?token=${encodeURIComponent(resetToken)}`;
     const emailContent = await renderEmailTemplate("password-reset", {
       name: user.name,
       resetUrl,

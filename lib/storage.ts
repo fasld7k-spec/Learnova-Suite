@@ -21,7 +21,6 @@ const extensionByType: Record<string, string> = {
   'image/png': '.png',
   'image/jpeg': '.jpg',
   'image/webp': '.webp',
-  'image/svg+xml': '.svg',
   'application/pdf': '.pdf',
   'application/zip': '.zip',
   'application/x-zip-compressed': '.zip',
@@ -32,9 +31,9 @@ function cleanDirectory(directory?: string) {
   return (directory || '').split('/').map((part) => part.replace(/[^a-zA-Z0-9-_]/g, '')).filter(Boolean).join('/');
 }
 
+// The extension follows the validated MIME type only. Trusting the client filename let a file that
+// passes the MP4 check be stored as .svg/.html and served as active content from our own origin.
 function safeExtension(file: File) {
-  const ext = path.extname(file.name).toLowerCase();
-  if (Object.values(extensionByType).includes(ext)) return ext;
   return extensionByType[file.type] || '';
 }
 

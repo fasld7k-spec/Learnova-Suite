@@ -60,9 +60,12 @@ export async function POST(req: NextRequest) {
           invoiceNumber: `CART-${Date.now()}`,
           items: {
             create: courses.map((course) => {
-              const price = currentLineByCourse.get(course.id)?.total || 0;
-              const commission = price * (settings.platformCommission / 100);
-              return { courseId: course.id, title: course.title, price, commission, instructorEarning: price - commission };
+              const line = currentLineByCourse.get(course.id);
+              const price = line?.total || 0;
+              // Commission and earnings exclude tax.
+              const net = price - (line?.tax || 0);
+              const commission = net * (settings.platformCommission / 100);
+              return { courseId: course.id, title: course.title, price, commission, instructorEarning: net - commission };
             }),
           },
           payment: {

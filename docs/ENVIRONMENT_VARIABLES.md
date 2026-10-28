@@ -23,6 +23,7 @@ Use `.env.example` for local demo mode and `.env.production.example` for product
 | `LEARNOVA_USE_MOCK` | `false` | Flutter build define. Set `true` only for offline demos/screenshots. |
 | `PLATFORM_COMMISSION_PERCENT` | `15` | Platform commission percentage |
 | `BASE_URL` | `http://127.0.0.1:3000` | Local smoke-test target URL |
+| `CLIENT_IP_HEADER` | empty | Header holding the real client IP behind a CDN or proxy (for example `cf-connecting-ip` or `x-real-ip`). Empty uses the last `X-Forwarded-For` hop. Used for rate limiting and audit logs. |
 | `DEMO_PASSWORD` | configurable local evaluation password | Demo account password used by smoke tests and seeded local evaluation accounts |
 | `DEMO_MODE` | `true` | Set `false` in production |
 | `PAYMENT_SANDBOX_MODE` | `true` | Set `false` only after real checkout providers are connected |

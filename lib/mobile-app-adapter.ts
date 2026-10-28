@@ -224,7 +224,12 @@ async function mobileUserForRequest(
   const userId = session.id;
 
   return prisma.user.findFirst({
-    where: { id: userId, role, status: { not: "SUSPENDED" } },
+    where: {
+      id: userId,
+      role,
+      // Teachers need admin approval, matching requireApprovedInstructor() on the web.
+      status: role === "INSTRUCTOR" ? "APPROVED" : { notIn: ["SUSPENDED", "REJECTED"] },
+    },
     select: { id: true, name: true, email: true, role: true, avatar: true },
   });
 }

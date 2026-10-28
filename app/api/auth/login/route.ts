@@ -3,20 +3,18 @@ import { prisma } from '@/lib/prisma';
 import { authCookieName, clearCookieOptions, createToken, createTwoFactorChallengeToken, secureCookieOptions, twoFactorChallengeCookieName, verifyPassword, type Role } from '@/lib/auth';
 import { loginSchema } from '@/lib/validators';
 import { fail } from '@/lib/api';
-import { rateLimit, resetRateLimit } from '@/lib/rate-limit';
+import { rateLimit } from '@/lib/rate-limit';
+import { clearLoginFailures, isLoginLocked, LOGIN_LOCKOUT_MS, recordLoginFailure } from '@/lib/login-guard';
 import { verifyTOTP, decryptSecret } from '@/lib/2fa';
 import { logAuditEvent } from '@/lib/audit-log';
 import { dispatchEmail } from '@/lib/email';
 import { requestRedirectUrl } from '@/lib/redirect-url';
+import { clientIp } from '@/lib/client-ip';
 
-/** Max failed login attempts per user before temporary rate limiting (Req 11.6) */
-const MAX_FAILED_ATTEMPTS = 5;
-/** Rate-limit duration in milliseconds: 15 minutes (Req 11.6) */
-const LOCKOUT_DURATION_MS = 15 * 60 * 1000;
 const DUMMY_PASSWORD_HASH = '$2a$12$IeeBglXrijDy1m3ROpJfzeoHAwyPQQVacWh734LUkTsj24/k0MnFi';
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 export async function POST(req: NextRequest) {
@@ -36,17 +34,19 @@ export async function POST(req: NextRequest) {
   const user = await prisma.user.findUnique({ where: { email: parsed.data.email } });
   const userAgent = req.headers.get('user-agent') || '';
 
+  // Refuse while the per-user lockout is active, even if the password is correct (Req 11.6).
+  if (user && isLoginLocked(user.id)) {
+    return fail('Too many failed login attempts. Try again in 15 minutes.', 429);
+  }
+
   const passwordMatches = await verifyPassword(parsed.data.password, user?.passwordHash || DUMMY_PASSWORD_HASH);
 
   if (!user || !passwordMatches) {
     // Per-user failed attempt tracking (Req 11.6)
     if (user) {
-      const userKey = `auth.login.user:${user.id}`;
-      const userLimited = rateLimit(userKey, MAX_FAILED_ATTEMPTS, LOCKOUT_DURATION_MS);
-
-      if (!userLimited.ok) {
+      if (recordLoginFailure(user.id)) {
         // Threshold breached - alert and rely on rate limiting instead of permanently changing account status.
-        const lockedUntil = new Date(Date.now() + LOCKOUT_DURATION_MS);
+        const lockedUntil = new Date(Date.now() + LOGIN_LOCKOUT_MS);
 
         void logAuditEvent({
           action: 'auth.login.rate_limited',
@@ -112,9 +112,6 @@ export async function POST(req: NextRequest) {
     return fail('Account is not active', 403);
   }
 
-  // Successful credential check - reset per-user failed attempt counter
-  resetRateLimit(`auth.login.user:${user.id}`);
-
   // Check if 2FA is enabled for this user
   const twoFactor = await prisma.twoFactorAuth.findFirst({
     where: { userId: user.id, enabled: true },
@@ -142,6 +139,7 @@ export async function POST(req: NextRequest) {
 
     const valid = verifyTOTP(totpToken, secret);
     if (!valid) {
+      recordLoginFailure(user.id);
       await prisma.loginHistory.create({ data: { email: user.email, userId: user.id, ip, userAgent, success: false } }).catch(() => null);
       void logAuditEvent({
         action: 'auth.login.failure',
@@ -155,7 +153,8 @@ export async function POST(req: NextRequest) {
     }
   }
 
-  // Credentials (and TOTP if required) are valid - issue session cookie
+  // Credentials (and TOTP if required) are valid - reset the failure counter and issue the session cookie
+  clearLoginFailures(user.id);
   await prisma.loginHistory.create({ data: { email: user.email, userId: user.id, ip, userAgent, success: true } }).catch(() => null);
 
   void logAuditEvent({

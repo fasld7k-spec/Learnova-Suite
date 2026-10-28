@@ -22,6 +22,10 @@ export async function POST(req: NextRequest) {
     const csrfToken = req.headers.get('x-csrf-token') || String(body.csrfToken || '');
     if (!(await verifyCsrf(csrfToken))) return fail('Invalid CSRF token.', 403);
 
+    // Re-running setup would reset `enabled` to false; turning 2FA off must go through /disable (which needs a code).
+    const existing = await prisma.twoFactorAuth.findUnique({ where: { userId: user.id }, select: { enabled: true } });
+    if (existing?.enabled) return fail('Two-factor authentication is already enabled. Disable it first to set it up again.', 409);
+
     // Generate a new TOTP secret (base32-encoded)
     const plainSecret = generateTOTPSecret();
 

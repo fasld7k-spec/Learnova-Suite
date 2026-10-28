@@ -30,7 +30,7 @@ export async function GET() {
       `DTSTART:${fmt(s.startsAt)}`,
       `SUMMARY:${clean(s.title)}`,
       `DESCRIPTION:${clean(s.description || '')}`,
-      `URL:${s.url}`,
+      // No join URL: this feed is public, and meeting links are only handed out to enrolled students.
       'END:VEVENT'
     ]),
     'END:VCALENDAR'

@@ -8,13 +8,10 @@ import { featureEnabled } from "@/lib/features";
 import { studentForRequest } from "@/lib/mobile-app-adapter";
 import { rateLimit } from "@/lib/rate-limit";
 import { getSiteSettings } from "@/lib/site-settings";
+import { clientIp } from "@/lib/client-ip";
 
 function requestIp(req: Request) {
-  return (
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ||
-    req.headers.get("x-real-ip") ||
-    "local"
-  );
+  return clientIp(req.headers);
 }
 
 export async function POST(request: Request) {

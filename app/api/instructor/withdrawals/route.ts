@@ -5,8 +5,7 @@ import { prisma } from '@/lib/prisma';
 import { formatMoney, getSiteSettings } from '@/lib/site-settings';
 import { fromJsonObject } from '@/lib/json-fields';
 import { verifyCsrf } from '@/lib/csrf';
-
-const money = (value: unknown) => Number(value || 0);
+import { createWithdrawalWithinBalance, WithdrawalExceedsBalanceError } from '@/lib/instructor-balance';
 
 function formError(req: NextRequest, message: string, status = 422) {
   if (req.headers.get('accept')?.includes('application/json')) return fail(message, status);
@@ -33,28 +32,13 @@ export async function POST(req: NextRequest) {
     const details = fromJsonObject<Record<string, string>>(payoutMethod.details);
     const methodLabel = `${payoutMethod.method}${details.accountName ? ` - ${details.accountName}` : ''}`;
 
-    const courses = await prisma.course.findMany({ where: { instructorId: user.id }, select: { id: true } });
-    const courseIds = courses.map((course) => course.id);
-    const [items, withdrawals, settings] = await Promise.all([
-      courseIds.length
-        ? prisma.orderItem.findMany({
-            where: { courseId: { in: courseIds }, order: { status: 'PAID' } },
-            select: { instructorEarning: true }
-          })
-        : Promise.resolve([]),
-      prisma.withdrawal.findMany({ where: { instructorId: user.id }, select: { amount: true, status: true } }),
-      getSiteSettings()
-    ]);
-
-    const totalEarnings = items.reduce((sum, item) => sum + money(item.instructorEarning), 0);
-    const reserved = withdrawals
-      .filter((withdrawal) => withdrawal.status === 'PENDING' || withdrawal.status === 'APPROVED' || withdrawal.status === 'PAID')
-      .reduce((sum, withdrawal) => sum + money(withdrawal.amount), 0);
-    const available = Math.max(totalEarnings - reserved, 0);
-
-    if (amount > available) return formError(req, `Withdrawal exceeds available balance of ${formatMoney(available, settings.currency)}.`);
-
-    await prisma.withdrawal.create({ data: { instructorId: user.id, amount, method: methodLabel } });
+    try {
+      await createWithdrawalWithinBalance(user.id, amount, methodLabel);
+    } catch (error) {
+      if (!(error instanceof WithdrawalExceedsBalanceError)) throw error;
+      const settings = await getSiteSettings();
+      return formError(req, `Withdrawal exceeds available balance of ${formatMoney(error.available, settings.currency)}.`);
+    }
     return NextResponse.redirect(new URL('/instructor/earnings', req.url), 303);
   } catch (error: any) {
     return formError(req, error.message || 'Unable to request withdrawal.', 500);

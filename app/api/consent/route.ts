@@ -3,13 +3,11 @@ import { fail, ok } from '@/lib/api';
 import { getSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { enforceRateLimit } from '@/lib/request-security';
+import { clientIp } from '@/lib/client-ip';
 
 function requestIp(req: NextRequest) {
-  return (
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip')?.trim() ||
-    null
-  );
+  const ip = clientIp(req.headers);
+  return ip === 'local' ? null : ip;
 }
 
 export async function POST(req: NextRequest) {

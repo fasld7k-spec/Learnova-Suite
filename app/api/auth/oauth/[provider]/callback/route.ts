@@ -126,7 +126,9 @@ export async function GET(
         });
 
         if (existingUser) {
-          // Email exists: link the OAuthAccount to the existing user
+          // Only auto-link accounts that were themselves created through OAuth. Linking a password
+          // account by email would let someone who pre-registered the victim's address keep access.
+          if (existingUser.passwordHash) return loginError(req, 'account_exists');
           await prisma.oAuthAccount.create({
             data: {
               userId: existingUser.id,
@@ -161,6 +163,10 @@ export async function GET(
     } catch {
       return loginError(req, 'database_error');
     }
+
+    // OAuth does not replace the second factor: 2FA users must sign in with password + code.
+    const twoFactor = await prisma.twoFactorAuth.findFirst({ where: { userId: user.id, enabled: true }, select: { id: true } });
+    if (twoFactor) return loginError(req, 'two_factor_required');
 
     // Issue JWT session cookie
     const token = await createToken({

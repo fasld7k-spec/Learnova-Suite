@@ -1,6 +1,7 @@
 import { jwtVerify } from 'jose';
 import { NextResponse, type NextRequest } from 'next/server';
 import { requestRedirectUrl } from './lib/redirect-url';
+import { clientIp } from '@/lib/client-ip';
 
 const protectedPrefixes = [
   '/admin',
@@ -122,7 +123,7 @@ function forbidden(req: NextRequest) {
 }
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 function tooManyRequests() {

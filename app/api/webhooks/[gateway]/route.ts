@@ -836,6 +836,17 @@ export async function POST(
     }
   }
 
+  // Mollie webhooks are unsigned and only carry the payment ID: replace the
+  // client-supplied body with the payment as reported by the Mollie API.
+  if (adapter instanceof MollieAdapter) {
+    const trusted = await adapter.fetchTrustedWebhookPayload(rawBody);
+    if (!trusted) {
+      console.warn(`[webhook:${gateway}] Payment could not be verified with the Mollie API`);
+      return NextResponse.json({ error: 'Invalid payment' }, { status: 401 });
+    }
+    payload = trusted;
+  }
+
   // ------------------------------------------------------------------
   // Step 7: Extract event ID and check idempotency (Req 2.11)
   // ------------------------------------------------------------------

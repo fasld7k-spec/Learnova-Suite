@@ -6,7 +6,18 @@ import { CsrfInput } from '@/components/CsrfInput';
 import { localizedPageCopy } from '@/lib/page-copy';
 import { getSiteSettings } from '@/lib/site-settings';
 
-export default async function Login(props: { searchParams?: Promise<{ oauth?: string; status?: string }> }) {
+const oauthErrorMessages: Record<string, { en: string; ar: string }> = {
+  account_exists: {
+    en: 'An account with this email already exists. Sign in with your password first.',
+    ar: 'يوجد حساب بهذا البريد بالفعل. سجّل الدخول بكلمة المرور أولاً.',
+  },
+  two_factor_required: {
+    en: 'This account uses two-factor authentication. Sign in with your password and authenticator code.',
+    ar: 'هذا الحساب يستخدم التحقق بخطوتين. سجّل الدخول بكلمة المرور ورمز التطبيق.',
+  },
+};
+
+export default async function Login(props: { searchParams?: Promise<{ oauth?: string; status?: string; error?: string }> }) {
   const searchParams = await props.searchParams;
   const settings = await getSiteSettings();
   const copy = localizedPageCopy(settings.defaultLanguage).auth;
@@ -18,6 +29,10 @@ export default async function Login(props: { searchParams?: Promise<{ oauth?: st
   const oauthNotice = searchParams?.status === 'demo-config-required'
     ? `${searchParams.oauth || 'OAuth'} ${copy.oauthDemo}`
     : '';
+  const oauthError = searchParams?.error
+    ? oauthErrorMessages[searchParams.error] ?? { en: 'Sign-in with this provider failed. Please try again.', ar: 'تعذّر تسجيل الدخول بهذا المزوّد. حاول مرة أخرى.' }
+    : null;
+  const errorNotice = oauthError ? (settings.defaultLanguage === 'ar' ? oauthError.ar : oauthError.en) : '';
   const statusNotice = searchParams?.status === 'password-reset'
     ? copy.passwordUpdated
     : searchParams?.status === 'signed-out'
@@ -54,6 +69,7 @@ export default async function Login(props: { searchParams?: Promise<{ oauth?: st
             <h2 className="text-3xl font-black text-white">{copy.loginTitle}</h2>
             <p className="mt-3 text-sm leading-6 text-slate-400">{copy.loginSubtitle}</p>
             {oauthNotice && <p className="mt-4 rounded-lg border border-amber-300/40 bg-amber-300/10 p-3 text-sm font-semibold text-amber-100">{oauthNotice}</p>}
+            {errorNotice && <p className="mt-4 rounded-lg border border-rose-300/40 bg-rose-400/10 p-3 text-sm font-semibold text-rose-100">{errorNotice}</p>}
             {statusNotice && <p className="mt-4 rounded-lg border border-emerald-300/30 bg-emerald-400/10 p-3 text-sm font-semibold text-emerald-100">{statusNotice}</p>}
             <label className="relative mt-8 block">
               <Mail size={17} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-violet-200" />

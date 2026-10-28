@@ -4,6 +4,7 @@ import { requireUser } from '@/lib/auth';
 import { verifyCsrf } from '@/lib/csrf';
 import { generateSignedEmbedUrl } from '@/lib/video-providers';
 import { prisma } from '@/lib/prisma';
+import { isLessonDripUnlocked } from '@/lib/drip-access';
 
 /**
  * POST /api/media/sign
@@ -51,7 +52,8 @@ export async function POST(req: NextRequest) {
     const allowed = user.role === 'ADMIN'
       || videoAsset.lesson.module.course.instructorId === user.id
       || videoAsset.lesson.isPreview
-      || Boolean(await prisma.enrollment.findFirst({ where: { userId: user.id, courseId }, select: { id: true } }));
+      // Enrolled learners only once the lesson's drip schedule has unlocked it.
+      || await isLessonDripUnlocked({ userId: user.id, courseId, lessonId: videoAsset.lessonId });
 
     if (!allowed) {
       return fail('Forbidden', 403);

@@ -3,6 +3,7 @@ import { fail, ok } from "@/lib/api";
 import { fromJsonObject } from "@/lib/json-fields";
 import { instructorForRequest } from "@/lib/mobile-app-adapter";
 import { prisma } from "@/lib/prisma";
+import { createWithdrawalWithinBalance, instructorBalance, WithdrawalExceedsBalanceError } from "@/lib/instructor-balance";
 
 function money(value: unknown) {
   return Number(value || 0);
@@ -40,23 +41,15 @@ export async function GET(request: NextRequest) {
     }),
   ]);
 
-  const totalEarnings = items.reduce(
-    (sum, item) => sum + money(item.instructorEarning),
-    0,
-  );
-  const paidOut = withdrawals
-    .filter(
-      (withdrawal) =>
-        withdrawal.status === "APPROVED" || withdrawal.status === "PAID",
-    )
-    .reduce((sum, withdrawal) => sum + money(withdrawal.amount), 0);
-  const pendingBalance = withdrawals
-    .filter((withdrawal) => withdrawal.status === "PENDING")
-    .reduce((sum, withdrawal) => sum + money(withdrawal.amount), 0);
-  const availableBalance = Math.max(
-    totalEarnings - paidOut - pendingBalance,
-    0,
-  );
+  // Totals come from all rows; the two lists above are only the recent history shown in the app.
+  const [{ totalEarnings, available: availableBalance }, pending] = await Promise.all([
+    instructorBalance(prisma, instructor.id),
+    prisma.withdrawal.aggregate({
+      where: { instructorId: instructor.id, status: "PENDING" },
+      _sum: { amount: true },
+    }),
+  ]);
+  const pendingBalance = Number(pending._sum.amount ?? 0);
 
   const earningTransactions = items.slice(0, 8).map((item) => ({
     id: item.id,
@@ -105,21 +98,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  const summary = await GET(request);
-  const payload = await summary.json();
-  const availableBalance = Number(payload?.data?.availableBalance || 0);
-  if (amount > availableBalance) {
-    return fail("Withdrawal amount exceeds available balance.", 422);
+  let withdrawal;
+  try {
+    withdrawal = await createWithdrawalWithinBalance(instructor.id, amount, payoutMethodLabel(payoutMethod));
+  } catch (error) {
+    if (error instanceof WithdrawalExceedsBalanceError) {
+      return fail("Withdrawal amount exceeds available balance.", 422);
+    }
+    throw error;
   }
-
-  const withdrawal = await prisma.withdrawal.create({
-    data: {
-      instructorId: instructor.id,
-      method: payoutMethodLabel(payoutMethod),
-      amount,
-      status: "PENDING",
-    },
-  });
 
   return ok(
     {

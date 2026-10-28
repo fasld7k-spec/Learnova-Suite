@@ -1,6 +1,7 @@
 import { createHmac, timingSafeEqual } from "crypto";
 import { decryptSecret, encryptSecret } from "@/lib/secret-fields";
 import { prisma } from "@/lib/prisma";
+import { isLessonDripUnlocked } from "@/lib/drip-access";
 
 export type ProtectedResourceKind =
   | "lesson-video"
@@ -378,18 +379,26 @@ export async function checkLessonMediaAccess(
     },
     select: { id: true },
   });
-  return enrollment
-    ? {
-        allowed: true,
-        courseId: lesson.module.courseId,
-        url: targetUrl,
-        reason: "enrolled learner",
-      }
-    : {
-        allowed: false,
-        status: 403,
-        reason: "course purchase/enrollment required",
-      };
+  if (!enrollment)
+    return {
+      allowed: false,
+      status: 403,
+      reason: "course purchase/enrollment required",
+    };
+  if (
+    !(await isLessonDripUnlocked({
+      userId: currentUser.id,
+      courseId: lesson.module.courseId,
+      lessonId,
+    }))
+  )
+    return { allowed: false, status: 403, reason: "lesson is not unlocked yet" };
+  return {
+    allowed: true,
+    courseId: lesson.module.courseId,
+    url: targetUrl,
+    reason: "enrolled learner",
+  };
 }
 
 export async function checkCourseResourceAccess(

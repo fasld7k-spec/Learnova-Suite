@@ -16,6 +16,7 @@ import { decryptSecret, verifyTOTP } from '@/lib/2fa';
 import { logAuditEvent } from '@/lib/audit-log';
 import { verifyCsrf } from '@/lib/csrf';
 import { enforceRateLimit } from '@/lib/request-security';
+import { clientIp } from '@/lib/client-ip';
 
 export async function POST(req: NextRequest) {
   // 1. Require an authenticated session
@@ -81,7 +82,7 @@ export async function POST(req: NextRequest) {
   void logAuditEvent({
     action: 'auth.2fa.disabled',
     userId: session.id,
-    ip: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local',
+    ip: clientIp(req.headers),
     entity: 'TwoFactorAuth',
     entityId: session.id,
     details: { email: session.email },

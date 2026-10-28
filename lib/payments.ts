@@ -87,7 +87,9 @@ export async function createOrderForCourse({
     if (selected !== 'free') await ensureGatewayAvailable(selected);
 
     const itemTotal = pricing.lines[0]?.total || 0;
-    const commission = itemTotal * (settings.platformCommission / 100);
+    // Commission and instructor earnings are based on the price net of tax; tax is not instructor revenue.
+    const itemNet = itemTotal - (pricing.lines[0]?.tax || 0);
+    const commission = itemNet * (settings.platformCommission / 100);
     const created = await tx.order.create({
       data: {
         userId,
@@ -102,7 +104,7 @@ export async function createOrderForCourse({
             title: course.title,
             price: itemTotal,
             commission,
-            instructorEarning: itemTotal - commission,
+            instructorEarning: itemNet - commission,
           },
         },
         payment: {
@@ -217,19 +219,20 @@ export async function markOrderPaid(orderId: string, transactionId?: string) {
     return existingOrder;
   }
 
-  const order = await prisma.order.update({
-    where: { id: orderId },
-    data: {
-      status: 'PAID',
-      payment: {
-        update: {
-          status: 'PAID',
-          ...(transactionId ? { transactionId } : {})
-        }
-      }
-    },
-    include: { items: true, payment: true },
+  // Conditional update: when two confirmations race (e.g. webhook + redirect capture), only the
+  // one that flips the status runs the side effects below (enrollment, affiliate, coupons, emails).
+  const claimed = await prisma.order.updateMany({
+    where: { id: orderId, status: { not: 'PAID' } },
+    data: { status: 'PAID' },
   });
+  if (claimed.count === 0) {
+    return prisma.order.findUniqueOrThrow({ where: { id: orderId }, include: { items: true, payment: true } });
+  }
+  await prisma.payment.updateMany({
+    where: { orderId },
+    data: { status: 'PAID', ...(transactionId ? { transactionId } : {}) },
+  });
+  const order = await prisma.order.findUniqueOrThrow({ where: { id: orderId }, include: { items: true, payment: true } });
   const user = await prisma.user.findUnique({ where: { id: order.userId } });
 
   const metadata = fromJsonObject<{ couponId?: string; subscriptionId?: string }>(order.payment?.metadata);
@@ -352,6 +355,37 @@ export async function markOrderFailed(orderId: string, reason?: string) {
   });
 }
 
+/**
+ * Removes the course access an order granted once it is refunded. Courses the
+ * student also owns through another paid order are kept. A certificate issued
+ * for a revoked enrollment is removed with it (it references the enrollment).
+ */
+export async function revokeRefundedOrderAccess(tx: Prisma.TransactionClient, orderId: string) {
+  const order = await tx.order.findUnique({ where: { id: orderId }, select: { userId: true, items: { select: { courseId: true } } } });
+  if (!order) return;
+  const courseIds = order.items
+    .map((item) => item.courseId)
+    .filter((courseId) => !courseId.startsWith('subscription:') && !courseId.startsWith('donation:'));
+  if (!courseIds.length) return;
+
+  const stillOwned = await tx.orderItem.findMany({
+    where: { courseId: { in: courseIds }, order: { userId: order.userId, status: 'PAID', id: { not: orderId } } },
+    select: { courseId: true },
+  });
+  const owned = new Set(stillOwned.map((item) => item.courseId));
+  const revoke = courseIds.filter((courseId) => !owned.has(courseId));
+  if (!revoke.length) return;
+
+  const enrollments = await tx.enrollment.findMany({
+    where: { userId: order.userId, courseId: { in: revoke } },
+    select: { id: true },
+  });
+  const enrollmentIds = enrollments.map((enrollment) => enrollment.id);
+  if (!enrollmentIds.length) return;
+  await tx.certificate.deleteMany({ where: { enrollmentId: { in: enrollmentIds } } });
+  await tx.enrollment.deleteMany({ where: { id: { in: enrollmentIds } } });
+}
+
 export async function refundOrder(orderId: string, transactionId?: string) {
   return prisma.$transaction(async (tx) => {
     const existing = await tx.order.findUnique({ where: { id: orderId }, include: { payment: true } });
@@ -378,6 +412,7 @@ export async function refundOrder(orderId: string, transactionId?: string) {
       },
     });
     await tx.couponRedemption.deleteMany({ where: { orderId } });
+    await revokeRefundedOrderAccess(tx, orderId);
     return order;
   });
 }

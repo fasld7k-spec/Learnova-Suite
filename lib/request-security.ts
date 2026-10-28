@@ -2,6 +2,7 @@ import { NextRequest } from 'next/server';
 import { fail } from '@/lib/api';
 import { prisma } from '@/lib/prisma';
 import { rateLimit } from '@/lib/rate-limit';
+import { clientIp } from '@/lib/client-ip';
 
 type RateLimitPolicy = { limit: number; windowMs: number };
 
@@ -61,11 +62,7 @@ function refreshRateLimitPoliciesInBackground() {
 }
 
 export function requestIp(req: NextRequest) {
-  return (
-    req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() ||
-    req.headers.get('x-real-ip') ||
-    'local'
-  );
+  return clientIp(req.headers);
 }
 
 function requestHost(req: NextRequest) {

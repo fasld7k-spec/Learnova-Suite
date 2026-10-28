@@ -71,11 +71,13 @@ export function resolveAppUrl({
   requestOrigin?: string;
   fallback?: string;
 } = {}) {
+  // Configured URLs win over request headers: Host / X-Forwarded-Host are client-controlled
+  // and must not decide where password-reset or payment links point.
   return (
     normalizeAppUrl(configured) ||
+    configuredAppUrl() ||
     (headers ? appUrlFromHeaders(headers) : '') ||
     normalizeAppUrl(requestOrigin) ||
-    configuredAppUrl() ||
     normalizeAppUrl(fallback) ||
     localAppUrl
   );

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
-import { createEmailVerificationToken, hashPassword, requireUser, verifyPassword } from '@/lib/auth';
+import { authCookieName, createEmailVerificationToken, createToken, hashPassword, requireUser, secureCookieOptions, verifyPassword, type Role } from '@/lib/auth';
 import { fail, handleError, ok } from '@/lib/api';
 import { sendEmail } from '@/lib/email';
 import { rateLimit } from '@/lib/rate-limit';
@@ -9,9 +9,10 @@ import { invalidateUserProfileCache } from '@/lib/cache';
 import { logAuditEvent } from '@/lib/audit-log';
 import { appUrlFromRequest } from '@/lib/app-url';
 import { verifyCsrf } from '@/lib/csrf';
+import { clientIp } from '@/lib/client-ip';
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 export async function POST(req: NextRequest) {
@@ -64,8 +65,13 @@ export async function POST(req: NextRequest) {
         entityId: user.id,
         details: { email: user.email },
       });
-      if (acceptsHtml) return NextResponse.redirect(new URL('/account?password=changed', req.url), 303);
-      return ok({ message: 'Password changed.' });
+      // Older sessions are invalidated by passwordChangedAt; keep this one signed in with a fresh token.
+      const freshToken = await createToken({ id: user.id, email: user.email, role: user.role as Role });
+      const response = acceptsHtml
+        ? NextResponse.redirect(new URL('/account?password=changed', req.url), 303)
+        : ok({ message: 'Password changed.' });
+      response.cookies.set(authCookieName, freshToken, secureCookieOptions());
+      return response;
     }
 
     return fail('Unsupported account action.', 400);

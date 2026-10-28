@@ -5,6 +5,7 @@ import { fail } from '@/lib/api';
 import { fromJsonArray, toJson } from '@/lib/json-fields';
 import { prisma } from '@/lib/prisma';
 import { rateLimit } from '@/lib/rate-limit';
+import { clientIp } from '@/lib/client-ip';
 
 export const publicApiScopes = [
   { value: 'courses:read', label: 'Read public courses' },
@@ -29,7 +30,7 @@ export function hashApiKey(key: string) {
 }
 
 function requestIp(req: NextRequest) {
-  return req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || req.headers.get('x-real-ip') || 'local';
+  return clientIp(req.headers);
 }
 
 export async function recordApiUsage({

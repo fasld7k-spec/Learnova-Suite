@@ -12,6 +12,7 @@ import { CsrfInput } from '@/components/CsrfInput';
 import { ArrowLeft, ArrowRight, BadgePercent, BookOpen, CheckCircle2, Clock3, Flag, Heart, Layers3, MessageCircle, PlayCircle, ShoppingCart, Star, ThumbsUp, UserRound } from 'lucide-react';
 import { headers } from 'next/headers';
 import { notFound } from 'next/navigation';
+import { clientIp } from '@/lib/client-ip';
 
 const metricText = 'text-[13px] font-semibold text-slate-400';
 const border = 'border-violet-300/20';
@@ -94,7 +95,8 @@ export default async function CourseDetails(
     .slice(0, 3);
 
   const requestHeaders = await headers();
-  const ip = requestHeaders.get('x-forwarded-for')?.split(',')[0]?.trim() || requestHeaders.get('x-real-ip') || null;
+  const clientAddress = clientIp(requestHeaders);
+  const ip = clientAddress === 'local' ? null : clientAddress;
   await prisma.courseView.create({ data: { courseId: course.id, userId: session?.id, ip } }).catch(() => null);
   const outcomes = fromJsonArray<string>(course.outcomes);
   const requirements = fromJsonArray<string>(course.requirements);

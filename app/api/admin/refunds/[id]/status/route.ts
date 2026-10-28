@@ -5,6 +5,7 @@ import { requireUser } from '@/lib/auth';
 import { dispatchEmail } from '@/lib/email';
 import { fromJsonObject, toJson } from '@/lib/json-fields';
 import { refundGatewayPayment, type RefundPaymentOutcome } from '@/lib/payment-gateways';
+import { revokeRefundedOrderAccess } from '@/lib/payments';
 import { prisma } from '@/lib/prisma';
 import { verifyCsrf } from '@/lib/csrf';
 
@@ -35,6 +36,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
 
     let refundOutcome: RefundPaymentOutcome | null = null;
     if (status === 'APPROVED' && existing.status !== 'APPROVED') {
+      // Never pay out twice: the order must still be paid (not already refunded by another request or a provider webhook).
+      if (order.status !== 'PAID') return fail(`Order is ${order.status.toLowerCase()}, only paid orders can be refunded.`, 409);
       refundOutcome = await refundGatewayPayment(order);
       if (refundOutcome.mode !== 'provider') {
         console.warn('Refund approved for manual/offline processing', {
@@ -55,6 +58,7 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         const refundReference = refundOutcome?.providerRefundId || order.payment?.transactionId || `manual-refund-${updated.id}`;
         await tx.order.update({ where: { id: order.id }, data: { status: 'REFUNDED' } });
         await tx.couponRedemption.deleteMany({ where: { orderId: order.id } });
+        await revokeRefundedOrderAccess(tx, order.id);
         await tx.payment.updateMany({
           where: { orderId: order.id },
           data: {

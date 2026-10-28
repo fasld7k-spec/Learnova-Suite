@@ -348,6 +348,39 @@ export class MollieAdapter implements GatewayAdapter {
     return true;
   }
 
+  /**
+   * Mollie webhooks only carry `id=tr_xxx` and are unsigned, so nothing else in
+   * the request body can be trusted. Fetch the payment from the Mollie API and
+   * return a payload built solely from Mollie's response (status, amount,
+   * currency, our order ID and reference from the metadata we set).
+   *
+   * @returns `null` when the ID is malformed or Mollie does not know the payment.
+   */
+  async fetchTrustedWebhookPayload(payload: string): Promise<Record<string, unknown> | null> {
+    let paymentId: string | null = null;
+    try {
+      paymentId = new URLSearchParams(payload).get('id');
+    } catch {
+      return null;
+    }
+    if (!paymentId || !/^tr_[A-Za-z0-9]+$/.test(paymentId)) return null;
+
+    const [payment, apiError] = await mollieFetch<MolliePayment>(`/payments/${encodeURIComponent(paymentId)}`);
+    if (apiError !== null || payment === null) {
+      console.warn('[MollieAdapter] fetchTrustedWebhookPayload: could not fetch payment from Mollie', { paymentId, error: apiError });
+      return null;
+    }
+
+    const metadata = payment.metadata ?? {};
+    return {
+      id: payment.id,
+      status: payment.status,
+      orderId: metadata.orderId != null ? String(metadata.orderId) : undefined,
+      reference: metadata.reference != null ? String(metadata.reference) : undefined,
+      amount: { value: payment.amount.value, currency: payment.amount.currency },
+    };
+  }
+
   // -------------------------------------------------------------------------
   // capturePayment
   // -------------------------------------------------------------------------

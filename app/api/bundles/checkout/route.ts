@@ -41,6 +41,8 @@ export async function POST(req: NextRequest) {
     const selectedGateway = pricing.total <= 0 ? 'free' : gateway;
     if (selectedGateway !== 'free') await ensureGatewayAvailable(selectedGateway);
     const itemPrice = courses.length ? pricing.total / courses.length : 0;
+    // Commission and earnings exclude tax.
+    const itemNet = courses.length ? (pricing.total - pricing.tax) / courses.length : 0;
     const order = await prisma.order.create({
       data: {
         userId: user.id,
@@ -54,8 +56,8 @@ export async function POST(req: NextRequest) {
             courseId: course.id,
             title: `${bundle.title}: ${course.title}`,
             price: itemPrice,
-            commission: itemPrice * (settings.platformCommission / 100),
-            instructorEarning: itemPrice * (1 - settings.platformCommission / 100)
+            commission: itemNet * (settings.platformCommission / 100),
+            instructorEarning: itemNet * (1 - settings.platformCommission / 100)
           }))
         },
         payment: {
